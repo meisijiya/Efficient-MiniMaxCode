@@ -21,7 +21,7 @@ $ErrorActionPreference = "Stop"
 
 # === Configuration ===
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$RepoRoot = Resolve-Path (Join-Path $ScriptDir "..")
+$RepoRoot = Resolve-Path $ScriptDir
 
 # Default Mavis directory
 if (-not $MavisDir) {

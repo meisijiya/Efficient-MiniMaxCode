@@ -15,7 +15,7 @@ param(
 $ErrorActionPreference = "Continue"
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$RepoRoot = Resolve-Path (Join-Path $ScriptDir "..")
+$RepoRoot = Resolve-Path $ScriptDir
 
 if (-not $MavisDir) {
     $MavisDir = Join-Path $env:USERPROFILE ".mavis"
@@ -82,7 +82,8 @@ $mavisCmd = Get-Command mavis -ErrorAction SilentlyContinue
 if ($mavisCmd) {
     $list = mavis agent list 2>&1 | Out-String
     $expectedAgentCount = $expectedAgents.Count
-    $actualAgentCount = ($list | Select-String '"name"' -SimpleMatch).Count
+    # Count occurrences of "name": pattern (matches JSON name fields)
+    $actualAgentCount = ([regex]::Matches($list, '"name"\s*:\s*"')).Count
     if ($actualAgentCount -ge $expectedAgentCount) {
         Write-Ok "mavis list shows $actualAgentCount agents (expected $expectedAgentCount+)"
     } else {
