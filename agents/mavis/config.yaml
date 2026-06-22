@@ -1,0 +1,4 @@
+channel:
+  wechat:
+    session:
+      strategy: main

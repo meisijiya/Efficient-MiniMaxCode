@@ -1,0 +1,45 @@
+# Ignore rules for Efficient-MiniMaxCode
+
+# ==========================================
+# Agent workspace (auto-generated per agent)
+# ==========================================
+agents/*/workspace/
+agents/*/scratchpads/
+agents/*/sessions/
+
+# ==========================================
+# Mavis system files
+# ==========================================
+.builtin-skills/
+
+# ==========================================
+# OS / IDE
+# ==========================================
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ==========================================
+# Build / test artifacts
+# ==========================================
+*.log
+*.tmp
+*.bak
+node_modules/
+target/
+dist/
+build/
+
+# ==========================================
+# Sensitive / personal
+# ==========================================
+*.env
+.env.local
+secrets.yaml
+*.key
+*.pem
