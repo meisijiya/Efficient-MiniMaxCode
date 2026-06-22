@@ -46,28 +46,26 @@ See [SKILLS.md](SKILLS.md) for the full list with trigger keywords.
 
 ## How to Use
 
-### Option A — Fresh install in Mavis Code
+### Option A — One-line install (recommended)
 
-```bash
-# 1. Clone this repo
+**Windows (PowerShell)**:
+```powershell
 git clone https://github.com/meisijiya/Efficient-MiniMaxCode.git
 cd Efficient-MiniMaxCode
-
-# 2. Copy agents to your Mavis config
-#    On Windows (PowerShell):
-Copy-Item -Path .\agents\* -Destination $env:USERPROFILE\.mavis\agents\ -Recurse -Force
-#    On macOS / Linux (bash):
-#    cp -r agents/* ~/.mavis/agents/
-
-# 3. Copy skills
-#    On Windows:
-Copy-Item -Path .\skills\* -Destination $env:USERPROFILE\.mavis\skills\ -Recurse -Force
-#    On macOS / Linux:
-#    cp -r skills/* ~/.mavis/skills/
-
-# 4. Restart Mavis Code (or run `mavis agent list` to verify)
-mavis agent list
+.\install.ps1
+.\verify.ps1
 ```
+
+**macOS / Linux (bash)**:
+```bash
+git clone https://github.com/meisijiya/Efficient-MiniMaxCode.git
+cd Efficient-MiniMaxCode
+chmod +x install.sh verify.sh uninstall.sh
+./install.sh
+./verify.sh
+```
+
+The installer only copies **user-controlled files** (`agent.md` and `SKILL.md`) — daemon-generated files are skipped. See [docs/INSTALLATION.md](docs/INSTALLATION.md) for the full file map.
 
 ### Option B — Cherry-pick
 
@@ -75,15 +73,33 @@ Don't need all 13 agents? Copy only the ones you want:
 
 ```bash
 # Just the architectural review agent
-cp -r agents/architect ~/.mavis/agents/
+mkdir -p ~/.mavis/agents/architect
+cp agents/architect/agent.md ~/.mavis/agents/architect/
 
 # Just the testing skill
-cp -r skills/test-writer ~/.mavis/skills/
+mkdir -p ~/.mavis/skills/test-writer
+cp skills/test-writer/SKILL.md ~/.mavis/skills/test-writer/
 ```
 
 ### Option C — Use as a reference
 
 Read `agents/<name>/agent.md` to understand the role, then write your own prompt inspired by it.
+
+### Updating
+
+```bash
+cd Efficient-MiniMaxCode
+git pull
+./install.sh        # or .\install.ps1
+./verify.sh         # confirms install is up to date
+```
+
+### Uninstalling
+
+```bash
+./uninstall.sh      # moves files to ~/.mavis/.efficient-backup-<timestamp>/
+# restore from backup if needed
+```
 
 ---
 
@@ -108,50 +124,45 @@ Efficient-MiniMaxCode/
 ├── .gitignore
 ├── AGENTS.md                    # Agent index (13 entries with triggers)
 ├── SKILLS.md                    # Skill index (21 entries with triggers)
-├── agents/
-│   ├── architect/
-│   │   ├── agent.md
-│   │   ├── config.yaml
-│   │   └── PERSONA.md
-│   ├── auditor/
-│   ├── build-error-resolver/
-│   ├── code-simplifier/
-│   ├── coder/
-│   │   ├── agent.md
-│   │   ├── config.yaml
-│   │   └── .builtin-prompt-layout-v2
-│   ├── general/
-│   ├── mavis/
-│   ├── meta-writer/
-│   ├── planner/
-│   ├── release-manager/
-│   ├── silent-failure-hunter/
-│   ├── spec-miner/
-│   └── verifier/
-├── skills/
-│   ├── ai-coder/  (built-in)
-│   ├── backend-patterns-java/
-│   ├── backend-patterns-python/
-│   ├── backend-patterns-typescript/
-│   ├── code-reader/
-│   ├── database-patterns/
-│   ├── performance-analyzer/
-│   ├── plan-workflow/
-│   ├── search-first/
-│   ├── test-writer/
-│   ├── verification-loop/
-│   ├── vibecoding-discipline/
-│   └── ... (10 more built-in)
-└── docs/
-    ├── DESIGN.md                # Design rationale
-    └── 7-step-pipeline.md       # /plan workflow details
+├── install.ps1 / install.sh     # One-command installer (Windows / Unix)
+├── uninstall.ps1 / uninstall.sh # One-command uninstaller (with backup)
+├── verify.ps1 / verify.sh       # Verify installation
+├── docs/
+│   ├── INSTALLATION.md          # ⭐ Where every file goes & how Mavis reads it
+│   ├── DESIGN.md                # Design rationale
+│   └── 7-step-pipeline.md       # /plan workflow details
+├── agents/                      # 13 agents — only agent.md per agent
+│   ├── architect/agent.md
+│   ├── auditor/agent.md
+│   ├── build-error-resolver/agent.md
+│   ├── code-simplifier/agent.md
+│   ├── coder/agent.md
+│   ├── general/agent.md
+│   ├── mavis/agent.md
+│   ├── meta-writer/agent.md
+│   ├── planner/agent.md
+│   ├── release-manager/agent.md
+│   ├── silent-failure-hunter/agent.md
+│   ├── spec-miner/agent.md
+│   └── verifier/agent.md
+└── skills/                      # 23 skills — only SKILL.md per skill
+    ├── api-design/SKILL.md
+    ├── backend-patterns-java/SKILL.md
+    ├── backend-patterns-python/SKILL.md
+    ├── backend-patterns-typescript/SKILL.md
+    ├── code-reader/SKILL.md
+    ├── database-patterns/SKILL.md
+    ├── frontend-patterns/SKILL.md
+    ├── performance-analyzer/SKILL.md
+    ├── plan-workflow/SKILL.md
+    ├── search-first/SKILL.md
+    ├── test-writer/SKILL.md
+    ├── verification-loop/SKILL.md
+    ├── vibecoding-discipline/SKILL.md
+    └── ... (10 more built-in)
 ```
 
-**File semantics** (per agent):
-- `agent.md` — User-defined overlay appended to the built-in prompt
-- `PERSONA.md` — One-line persona (optional, only for custom agents)
-- `config.yaml` — Mavis daemon's per-agent config (engine, role, etc.)
-- `.builtin-prompt-layout-v2` — Daemon-generated layout marker (only for built-in agents)
+**Only `agent.md` and `SKILL.md` are tracked.** Daemon-generated files (`config.yaml`, `PERSONA.md`, `.builtin-prompt-layout-v2`, `_meta.json`) are NOT in this repo — they're machine-specific and would cause merge conflicts. The installer skips them. See [docs/INSTALLATION.md](docs/INSTALLATION.md) for the full rationale.
 
 ---
 

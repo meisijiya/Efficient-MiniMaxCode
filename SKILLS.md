@@ -1,4 +1,4 @@
-# Skill Index (21)
+﻿# Skill Index (21)
 
 > This index is auto-generated from the actual `SKILL.md` content. Use it as a quick reference for "which skill should I load for XX task".
 
@@ -31,7 +31,7 @@
 
 ---
 
-## Built-in Skills (10 — provided by Mavis)
+## Built-in Skills (10 鈥?provided by Mavis)
 
 These come with every Mavis Code install. Listed here for completeness.
 
@@ -45,12 +45,12 @@ These come with every Mavis Code install. Listed here for completeness.
 | `minimax-xlsx` | Read / create / edit / analyze Excel |
 | `office-document-specialist-suite` | Anthropic's Office docx/xlsx/pdf/pptx suite |
 | `pptx-skill` | Read / create / edit PowerPoint |
-| `prd-to-prototype` | PRD → interactive HTML/Tailwind prototype |
-| `story-video-generator` | Image / text → video story |
+| `prd-to-prototype` | PRD 鈫?interactive HTML/Tailwind prototype |
+| `story-video-generator` | Image / text 鈫?video story |
 
 ---
 
-## Custom Skills (11 — built for the Mavis team)
+## Custom Skills (11 鈥?built for the Mavis team)
 
 ### `backend-patterns-java`
 - **Triggers**: java, spring, springboot, jvm, jpa
@@ -69,44 +69,43 @@ These come with every Mavis Code install. Listed here for completeness.
 - **File**: `skills/backend-patterns-typescript/SKILL.md`
 
 ### `code-reader`
-- **Triggers**: read code, understand, 读懂, 调研, 解释代码
+- **Triggers**: read code, understand, 璇绘噦, 璋冪爺, 瑙ｉ噴浠ｇ爜
 - **Purpose**: Code understanding specialist (produces Code Maps)
 - **Use case**: Onboarding to unfamiliar codebase
 - **File**: `skills/code-reader/SKILL.md`
 
 ### `database-patterns`
-- **Triggers**: database, db, sql, postgres, mysql, migration, 索引, 事务, orm
+- **Triggers**: database, db, sql, postgres, mysql, migration, 绱㈠紩, 浜嬪姟, orm
 - **Purpose**: DB schema / migration / query optimization / ORM patterns
 - **File**: `skills/database-patterns/SKILL.md`
 
 ### `performance-analyzer`
-- **Triggers**: performance, 性能, 慢, profile, latency, 优化, 调优
+- **Triggers**: performance, 鎬ц兘, 鎱? profile, latency, 浼樺寲, 璋冧紭
 - **Purpose**: Performance analysis specialist (measure first, then optimize)
 - **File**: `skills/performance-analyzer/SKILL.md`
 
 ### `plan-workflow`
-- **Triggers**: /plan, 计划, planning, 流水线, workflow
-- **Purpose**: `/plan` command orchestration (spec-miner → planner → coder → architect + verifier → test-writer → meta-writer)
+- **Triggers**: /plan, 璁″垝, planning, 娴佹按绾? workflow
+- **Purpose**: `/plan` command orchestration (spec-miner 鈫?planner 鈫?coder 鈫?architect + verifier 鈫?test-writer 鈫?meta-writer)
 - **File**: `skills/plan-workflow/SKILL.md`
 
 ### `search-first`
-- **Triggers**: search, 调研, 查文档, 找惯例, research
+- **Triggers**: search, 璋冪爺, 鏌ユ枃妗? 鎵炬儻渚? research
 - **Purpose**: Search docs / source / conventions before coding (Karpathy principle 1)
 - **File**: `skills/search-first/SKILL.md`
 
 ### `test-writer`
-- **Triggers**: test, tdd, 单测, 集成测试, mock, pytest, junit, vitest
+- **Triggers**: test, tdd, 鍗曟祴, 闆嗘垚娴嬭瘯, mock, pytest, junit, vitest
 - **Purpose**: Test writing specialist (TDD-first, boundary + exception + integration)
 - **File**: `skills/test-writer/SKILL.md`
 
 ### `verification-loop`
-- **Triggers**: verify, test, tdd, 验证, 循环, 目标
+- **Triggers**: verify, test, tdd, 楠岃瘉, 寰幆, 鐩爣
 - **Purpose**: Goal-driven validation loop (Karpathy principle 4)
 - **File**: `skills/verification-loop/SKILL.md`
 
 ### `vibecoding-discipline`
-- **Triggers**: vibecoding, 屎山, 耦合, 解耦, 架构, 模块化
-- **Purpose**: 5-decoupling-practice enforcer (Vibe Coding video origin)
+- **Triggers**: vibecoding, 灞庡北, 鑰﹀悎, 瑙ｈ€? 鏋舵瀯, 妯″潡鍖?- **Purpose**: 5-decoupling-practice enforcer (Vibe Coding video origin)
 - **File**: `skills/vibecoding-discipline/SKILL.md`
 
 ---
@@ -115,14 +114,14 @@ These come with every Mavis Code install. Listed here for completeness.
 
 | Skill | Status | Plan |
 |-------|--------|------|
-| `api-design` | **v1 ✅** | Done — status codes, pagination, error envelope, auth, rate limiting |
-| `frontend-patterns` | **v1 ✅** | Done — React 19, Next 15, state management, forms, testing, a11y |
+| `api-design` | **v1 鉁?* | Done 鈥?status codes, pagination, error envelope, auth, rate limiting |
+| `frontend-patterns` | **v1 鉁?* | Done 鈥?React 19, Next 15, state management, forms, testing, a11y |
 
 Both skills now have full `SKILL.md` content. See the index above.
 
 ---
 
-## Skill ↔ Agent Loading Map
+## Skill 鈫?Agent Loading Map
 
 | Agent | Skills it MUST load |
 |-------|---------------------|
