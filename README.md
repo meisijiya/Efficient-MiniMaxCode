@@ -36,7 +36,7 @@ This repository is a **portable, version-controlled backup** of a Mavis Code age
 
 **Custom (11)** — built for the Mavis team:
 - **Backend patterns (3)**: `backend-patterns-java` · `backend-patterns-python` · `backend-patterns-typescript`
-- **Frontend / DB / API (3)**: `database-patterns` · `frontend-patterns` (work in progress) · `api-design` (work in progress)
+- **Frontend / DB / API (3)**: `database-patterns` · `frontend-patterns` (v1) · `api-design` (v1)
 - **Code reading / review (4)**: `code-reader` · `test-writer` · `performance-analyzer` · `vibecoding-discipline` (5-decoupling-practice)
 - **Workflow (2)**: `plan-workflow` (`/plan` command) · `search-first` (think-before-coding) · `verification-loop` (goal-driven validation)
 
@@ -157,8 +157,8 @@ Efficient-MiniMaxCode/
 
 ## Roadmap
 
-- [ ] Complete `api-design` skill (REST status codes / pagination / auth patterns)
-- [ ] Complete `frontend-patterns` skill (React 19 / Next 15)
+- [x] Complete `api-design` skill (REST status codes / pagination / auth patterns) — **done 2026-06-23**
+- [x] Complete `frontend-patterns` skill (React 19 / Next 15) — **done 2026-06-23**
 - [ ] Add `i18n` / `l10n` skill (when Mavis usage expands)
 - [ ] Multi-language README (English, 日本語)
 - [ ] Add CI to validate `agent.md` doesn't exceed Mavis daemon's 8000-byte `mavis agent new` limit (use `mavis agent update` workaround)

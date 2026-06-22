@@ -9,9 +9,9 @@
 | Write Java / Spring Boot code | `backend-patterns-java` |
 | Write TypeScript / Node code | `backend-patterns-typescript` |
 | Write Python / FastAPI / Django | `backend-patterns-python` |
-| Design / review REST API | `api-design` (work in progress) |
+| Design / review REST API | `api-design` (v1) |
 | Design / review SQL schema | `database-patterns` |
-| Write / refactor React component | `frontend-patterns` (work in progress) |
+| Write / refactor React component | `frontend-patterns` (v1) |
 | Read / understand unfamiliar code | `code-reader` |
 | Write tests (TDD-first) | `test-writer` |
 | Profile / optimize performance | `performance-analyzer` |
@@ -115,10 +115,10 @@ These come with every Mavis Code install. Listed here for completeness.
 
 | Skill | Status | Plan |
 |-------|--------|------|
-| `api-design` | empty (placeholder only) | Fill in REST status codes / pagination / auth patterns |
-| `frontend-patterns` | empty (placeholder only) | Fill in React 19 / Next 15 patterns |
+| `api-design` | **v1 ✅** | Done — status codes, pagination, error envelope, auth, rate limiting |
+| `frontend-patterns` | **v1 ✅** | Done — React 19, Next 15, state management, forms, testing, a11y |
 
-These directories exist but contain no `SKILL.md` yet. They are excluded from the index above.
+Both skills now have full `SKILL.md` content. See the index above.
 
 ---
 

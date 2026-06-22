@@ -143,7 +143,7 @@ From [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-ka
 
 This collection is **not perfect**. Known issues:
 
-- ❌ **API design and frontend patterns skills are empty** (placeholders only). They need real content.
+- ❌ ~~**API design and frontend patterns skills are empty** (placeholders only). They need real content.~~ **Fixed 2026-06-23** — both skills now have full v1 content.
 - ❌ **No auditor for run-time / observability** (only security / compliance). A future `observability-auditor` could review metrics / alerts / dashboards.
 - ❌ **No multi-language README** yet (English only).
 - ❌ **No CI** to validate agents don't exceed the Mavis daemon's 8000-byte `mavis agent new` limit (workaround: use `mavis agent update` for large prompts — see `mavis` memory entry).
@@ -153,7 +153,7 @@ This collection is **not perfect**. Known issues:
 
 ## 9. Future Work
 
-- [ ] Complete `api-design` and `frontend-patterns` skills
+- [x] Complete `api-design` and `frontend-patterns` skills — **done 2026-06-23**
 - [ ] Add CI with `mavis agent list` validation
 - [ ] Add a `release` workflow (GitHub Actions to publish tagged versions)
 - [ ] Translate README / DESIGN into English / 日本語
