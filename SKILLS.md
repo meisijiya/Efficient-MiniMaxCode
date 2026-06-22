@@ -90,8 +90,8 @@ These come with every Mavis Code install. Listed here for completeness.
 - **File**: `skills/plan-workflow/SKILL.md`
 
 ### `search-first`
-- **Triggers**: search, 璋冪爺, 鏌ユ枃妗? 鎵炬儻渚? research
-- **Purpose**: Search docs / source / conventions before coding (Karpathy principle 1)
+- **Triggers**: search, 调研, 查文档, 找惯例, research, 引用源, source-driven
+- **Purpose**: Search docs / source / conventions before coding (Karpathy principle 1) + addy `source-driven-development` — must cite sources or mark UNVERIFIED
 - **File**: `skills/search-first/SKILL.md`
 
 ### `test-writer`
@@ -105,19 +105,29 @@ These come with every Mavis Code install. Listed here for completeness.
 - **File**: `skills/verification-loop/SKILL.md`
 
 ### `vibecoding-discipline`
-- **Triggers**: vibecoding, 灞庡北, 鑰﹀悎, 瑙ｈ€? 鏋舵瀯, 妯″潡鍖?- **Purpose**: 5-decoupling-practice enforcer (Vibe Coding video origin)
+- **Triggers**: vibecoding, 屎山, 耦合, 解耦, 架构, 模块化
+- **Purpose**: 5-decoupling-practice enforcer (Vibe Coding video origin)
 - **File**: `skills/vibecoding-discipline/SKILL.md`
 
----
+### `grill-me` (NEW 2026-06-23)
+- **Triggers**: grill, interview, 需求不清晰, 95% 置信度, 反问
+- **Purpose**: Addy `interview-me` + matt `grill-me` fusion — one question at a time, until 95% confidence. spec-miner MUST load this.
+- **File**: `skills/grill-me/SKILL.md`
 
-## Skills in Progress (2)
+### `context-engineering` (NEW 2026-06-23)
+- **Triggers**: context, 喂信息, 上下文, 信息太多, 信息冲突
+- **Purpose**: Addy `context-engineering` — feed agents the right info at the right time. 4 filter rules + 4 context types.
+- **File**: `skills/context-engineering/SKILL.md`
 
-| Skill | Status | Plan |
-|-------|--------|------|
-| `api-design` | **v1 鉁?* | Done 鈥?status codes, pagination, error envelope, auth, rate limiting |
-| `frontend-patterns` | **v1 鉁?* | Done 鈥?React 19, Next 15, state management, forms, testing, a11y |
+### `observability-and-instrumentation` (NEW 2026-06-23)
+- **Triggers**: observability, 监控, 告警, 埋点, log, metric, trace, 上线
+- **Purpose**: Addy `observability-and-instrumentation` — structured logging + RED metrics + OpenTelemetry + symptom-based alerting. release-manager MUST check 4 items before launch.
+- **File**: `skills/observability-and-instrumentation/SKILL.md`
 
-Both skills now have full `SKILL.md` content. See the index above.
+### `project-context` (NEW 2026-06-23)
+- **Triggers**: CONTEXT.md, 术语, 领域语言, ubiquitous language, DDD
+- **Purpose**: Matt `CONTEXT.md` pattern — project-level domain language table. mavis loads on project start, all agents share.
+- **File**: `skills/project-context/SKILL.md`
 
 ---
 
@@ -125,14 +135,17 @@ Both skills now have full `SKILL.md` content. See the index above.
 
 | Agent | Skills it MUST load |
 |-------|---------------------|
-| `coder` | `vibecoding-discipline` + `verification-loop` + `backend-patterns-{java OR python OR ts}` + `database-patterns` (if SQL) + `api-design` (if API) |
-| `verifier` | `vibecoding-discipline` + `verification-loop` |
-| `architect` | `vibecoding-discipline` + `api-design` (if API) + `database-patterns` (if schema) |
-| `silent-failure-hunter` | `vibecoding-discipline` (composition > inheritance for safety) |
+| `coder` | `vibecoding-discipline` + `verification-loop` + `search-first` (第三方库) + `context-engineering` + `backend-patterns-{java OR python OR ts}` + `database-patterns` (if SQL) + `api-design` (if API) |
+| `verifier` | `vibecoding-discipline` + `verification-loop` + `context-engineering` |
+| `architect` | `vibecoding-discipline` + `context-engineering` + `api-design` (if API) + `database-patterns` (if schema) |
+| `silent-failure-hunter` | `vibecoding-discipline` (composition > inheritance for safety) + `observability-and-instrumentation` (看是否有 silent failure 埋点) |
 | `code-simplifier` | `vibecoding-discipline` + `verification-loop` |
 | `test-writer` (skill, not agent) | `vibecoding-discipline` + `verification-loop` |
-| `meta-writer` | `vibecoding-discipline` (single-writer iron rule) |
-| `auditor` | `vibecoding-discipline` + `api-design` (if API) + `database-patterns` (if SQL) |
-| `release-manager` | `vibecoding-discipline` + `verification-loop` |
+| `meta-writer` | `vibecoding-discipline` (single-writer iron rule) + `context-engineering` (ADR 格式) |
+| `auditor` | `vibecoding-discipline` + `api-design` (if API) + `database-patterns` (if SQL) + `observability-and-instrumentation` |
+| `release-manager` | `vibecoding-discipline` + `verification-loop` + `observability-and-instrumentation` (4 项 checklist) |
+| `spec-miner` | `grill-me` (必 load) + `vibecoding-discipline` + `project-context` (如果项目有 CONTEXT.md) |
+| `planner` | `vibecoding-discipline` + `context-engineering` |
+| `mavis` (orchestrator) | `vibecoding-discipline` + `context-engineering` + `project-context` (启动时 load) |
 
 See individual `agents/<name>/agent.md` for the explicit loading instructions.
