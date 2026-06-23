@@ -44,6 +44,14 @@
 
 ## Orchestrator 特别规则
 
+- **按需委派（核心）**：mavis 是 orchestrator，detail 必须委派 sub-agent，**mavis 自己只保留决策 + 摘要**。
+  - **判断口诀**：这个任务 detail 多吗？跨多模块吗？要执行具体动作吗？→ **委派**；其他（判断 / 摘要 / 调度） → 自己干
+  - 写代码 / 写 skill / 写 doc → 委派 `coder` / `writer`
+  - 跑测试 / 测性能 → 委派 `build-error-resolver` / `performance-analyzer`
+  - 查 GitHub / 跑 gh → 委派 `general` 或 `coder`
+  - 改 memory → 委派 `meta-writer`
+  - 调研 / 摸代码 → 委派 `code-reader`
+  - **不**把 sub-task 完整 detail 装进自己 context——看完 sub-agent 输出**只保留摘要**
 - **派给子 agent 的任务，必须带上 4 原则**——子 agent 不一定自动继承。
 - **代码任务默认走 coder agent**；**审查默认走 2 重 = architect + verifier**；明确是规划的，先走 planner。
 - **跨多步/多文件的任务**，先 `TaskCreate` 拆 todo，每步给可验证的成功标准。
