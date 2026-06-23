@@ -1,4 +1,4 @@
-﻿# Skill Index (21)
+﻿# Skill Index (23)
 
 > This index is auto-generated from the actual `SKILL.md` content. Use it as a quick reference for "which skill should I load for XX task".
 
@@ -28,6 +28,8 @@
 | Humanize AI-written text | `ai-eraser-skills` |
 | Digest learning material | `knowledge-digest` |
 | Generate story video | `story-video-generator` |
+| Split spec / PRD into vertical-slice issues | `to-issues` |
+| Implement PRD / issues into code (TDD SOP) | `implement` |
 
 ---
 
@@ -134,6 +136,16 @@ These come with every Mavis Code install. Listed here for completeness.
 - **Purpose**: Adapted from addy `git-workflow-and-versioning` — Trunk-based + Conventional Commits + Worktrees (multi-person) + Java/Maven pre-commit hygiene + gh CLI toolbox. Works for 1 person or many.
 - **File**: `skills/git-workflow-and-versioning/SKILL.md`
 
+### `to-issues` (NEW 2026-06-23)
+- **Triggers**: to-issues, 拆issue, 拆任务, issue拆分, vertical slice, 切片, PRD拆分, 需求拆解, 任务分解, tracer bullet
+- **Purpose**: Adapted from mattpocock/skills `engineering/to-issues` — split any plan / spec / PRD into independently-grabbable vertical-slice issues. Outputs to GitHub Issues / mavis team plan tasks / Jira.
+- **File**: `skills/to-issues/SKILL.md`
+
+### `implement` (NEW 2026-06-23)
+- **Triggers**: implement, 实施, 落地, 实现, plan-to-code, PRD-to-code, spec-to-code, issue-to-code, TDD流程, 编码流程
+- **Purpose**: Adapted from mattpocock/skills `engineering/implement` (14 lines) — expanded to full SOP: plan → TDD → typecheck → test → review → commit. Coordinates coder + test-writer + verifier + build-error-resolver.
+- **File**: `skills/implement/SKILL.md`
+
 ---
 
 ## Skill 鈫?Agent Loading Map
@@ -152,5 +164,6 @@ These come with every Mavis Code install. Listed here for completeness.
 | `spec-miner` | `grill-me` (必 load) + `vibecoding-discipline` + `project-context` (如果项目有 CONTEXT.md) |
 | `planner` | `vibecoding-discipline` + `context-engineering` |
 | `mavis` (orchestrator) | `vibecoding-discipline` + `context-engineering` + `project-context` (启动时 load) |
+| `coder` (when implementing from PRD/issues) | `implement` (6-step SOP: plan → TDD → typecheck → test → review → commit) + `to-issues` (if slicing a big spec) |
 
 See individual `agents/<name>/agent.md` for the explicit loading instructions.
