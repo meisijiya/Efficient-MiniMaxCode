@@ -1,9 +1,9 @@
 # Efficient-MiniMaxCode
 
-> A curated collection of **13 specialized agents** and **21 production-ready skills** for [Mavis Code](https://github.com/) — built to help a single developer ship like a full engineering team.
+> A curated collection of **13 specialized agents** and **31 production-ready skills** for [Mavis Code](https://github.com/) — built to help a single developer ship like a full engineering team.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Mavis Agents](https://img.shields.io/badge/agents-13-blue)]() [![Skills](https://img.shields.io/badge/skills-21-green)]()
+[![Mavis Agents](https://img.shields.io/badge/agents-13-blue)]() [![Skills](https://img.shields.io/badge/skills-31-green)]()
 
 ---
 
@@ -15,7 +15,7 @@ This repository is a **portable, version-controlled backup** of a Mavis Code age
 
 | Category | Agent | Role |
 |----------|-------|------|
-| **Orchestrator** | `mavis` | Root orchestrator — 7-step pipeline + routing + decision tree |
+| **Orchestrator** | `mavis` | Root orchestrator — 7-step pipeline + on-demand delegation + routing + decision tree |
 | **Programming** | `coder` | Hands-on software engineer (Spring Boot / TS / Python priority) |
 | **Architectural Review** | `architect` | Module boundaries / interfaces / data flow / state ownership / dependency direction |
 | **Code Review** | `verifier` | Adversarial verification (4-layer confidence gate) |
@@ -29,18 +29,45 @@ This repository is a **portable, version-controlled backup** of a Mavis Code age
 | **Release** | `release-manager` | commit / changelog / tag / deploy check / rollback |
 | **Fallback** | `general` | Generic worker (routes to specialists when needed) |
 
-### 21 Skills (Mavis Code compatible)
+### 31 Skills (Mavis Code compatible)
 
 **Built-in (10)** — provided by Mavis:
 `ai-coder` · `ai-eraser-skills` · `ai-short-drama-director` · `brainstorming` · `knowledge-digest` · `minimax-xlsx` · `office-document-specialist-suite` · `pptx-skill` · `prd-to-prototype` · `story-video-generator`
 
-**Custom (11)** — built for the Mavis team:
-- **Backend patterns (3)**: `backend-patterns-java` · `backend-patterns-python` · `backend-patterns-typescript`
-- **Frontend / DB / API (3)**: `database-patterns` · `frontend-patterns` (v1) · `api-design` (v1)
-- **Code reading / review (4)**: `code-reader` · `test-writer` · `performance-analyzer` · `vibecoding-discipline` (5-decoupling-practice)
-- **Workflow (2)**: `plan-workflow` (`/plan` command) · `search-first` (think-before-coding) · `verification-loop` (goal-driven validation)
+**Custom (21)** — built for the Mavis team:
+
+**Backend / Frontend / DB / API (6)**:
+`backend-patterns-java` · `backend-patterns-python` · `backend-patterns-typescript` · `database-patterns` · `frontend-patterns` · `api-design`
+
+**Code reading / review / discipline (5)**:
+`code-reader` · `test-writer` · `performance-analyzer` · `vibecoding-discipline` (5-decoupling-practice) · `silent-failure-hunter`-adjacent (`silent-failure-hunter` is an agent, not a skill)
+
+**Workflow / planning / delegation (5)**:
+`plan-workflow` (`/plan` command) · `search-first` (think-before-coding) · `verification-loop` (goal-driven validation) · `to-issues` (vertical-slice issue splitter, from mattpocock/skills) · `implement` (PRD → code 6-step SOP, from mattpocock/skills)
+
+**Project context / engineering practice (5)**:
+`grill-me` (需求深挖 — addy + matt fusion) · `context-engineering` (right info at right time) · `observability-and-instrumentation` (RED metrics + OpenTelemetry) · `project-context` (CONTEXT.md domain language) · `git-workflow-and-versioning` (trunk-based + worktrees + gh CLI)
 
 See [SKILLS.md](SKILLS.md) for the full list with trigger keywords.
+
+---
+
+## On-Demand Delegation (NEW)
+
+The orchestrator (`mavis`) follows **on-demand delegation**: detail work is spawned to a sub-agent via `mavis team plan` so the main session stays focused on decisions, not commands. A team plan has independent verification (`verifier`) and a final gate (`verify-as-task`).
+
+**When to delegate** (any of):
+- Detail is more than 1-2 tool calls
+- Multi-module / multi-file work
+- Need to read primary evidence (file system / daemon state / repo diff)
+- Need mechanical copy / compare / byte-exact verification
+
+**Decision shorthand**: "Will I run more than 3 tool calls in detail? → spawn a worker."
+
+**Built-in guard rails**:
+- `max_consecutive_failures: 2` — abort after 2 consecutive task failures
+- `verifier` is the default verifier; `auditor` only on重大决策 (money / PII / compliance)
+- Sub-session reports back via `mavis communication send` — no token-burning ack-ping-pong
 
 ---
 
@@ -110,6 +137,7 @@ This collection is built on **three core principles** drawn from [Karpathy's LLM
 1. **Architecture before implementation** — A senior engineer defines boundaries, AI fills in modules. "Complexity grows quadratically without architectural discipline."
 2. **5-decoupling practice** (Vibe Coding video) — Interface separation / Single responsibility / Composition over inheritance / Incremental delivery / Pure functions first.
 3. **2-3 layer review by default** — `architect + verifier` for most tasks, add `auditor` for money / PII / compliance scenarios. Don't blindly do 4 layers.
+4. **On-demand delegation** — The orchestrator spawns detail work to sub-agents and reads deliverables (not full audit trails). Main session stays focused on decisions.
 
 See [docs/DESIGN.md](docs/DESIGN.md) for the full design rationale.
 
@@ -123,7 +151,7 @@ Efficient-MiniMaxCode/
 ├── LICENSE                      # MIT
 ├── .gitignore
 ├── AGENTS.md                    # Agent index (13 entries with triggers)
-├── SKILLS.md                    # Skill index (21 entries with triggers)
+├── SKILLS.md                    # Skill index (31 entries with triggers)
 ├── install.ps1 / install.sh     # One-command installer (Windows / Unix)
 ├── uninstall.ps1 / uninstall.sh # One-command uninstaller (with backup)
 ├── verify.ps1 / verify.sh       # Verify installation
@@ -145,24 +173,39 @@ Efficient-MiniMaxCode/
 │   ├── silent-failure-hunter/agent.md
 │   ├── spec-miner/agent.md
 │   └── verifier/agent.md
-└── skills/                      # 23 skills — only SKILL.md per skill
+└── skills/                      # 31 skills — only SKILL.md per skill
     ├── api-design/SKILL.md
     ├── backend-patterns-java/SKILL.md
     ├── backend-patterns-python/SKILL.md
     ├── backend-patterns-typescript/SKILL.md
     ├── code-reader/SKILL.md
+    ├── context-engineering/SKILL.md
     ├── database-patterns/SKILL.md
     ├── frontend-patterns/SKILL.md
+    ├── git-workflow-and-versioning/SKILL.md
+    ├── grill-me/SKILL.md
+    ├── implement/SKILL.md
+    ├── observability-and-instrumentation/SKILL.md
     ├── performance-analyzer/SKILL.md
     ├── plan-workflow/SKILL.md
+    ├── project-context/SKILL.md
     ├── search-first/SKILL.md
     ├── test-writer/SKILL.md
+    ├── to-issues/SKILL.md
     ├── verification-loop/SKILL.md
     ├── vibecoding-discipline/SKILL.md
-    └── ... (10 more built-in)
+    └── ... (11 more built-in)
 ```
 
 **Only `agent.md` and `SKILL.md` are tracked.** Daemon-generated files (`config.yaml`, `PERSONA.md`, `.builtin-prompt-layout-v2`, `_meta.json`) are NOT in this repo — they're machine-specific and would cause merge conflicts. The installer skips them. See [docs/INSTALLATION.md](docs/INSTALLATION.md) for the full rationale.
+
+---
+
+## Known Mavis Quirks (worked around)
+
+- **`mavis agent update --system-prompt` silent drop** — Any size update may silently revert `agent.md` to a 39-byte stub. **Never use it.** Always use Edit / Write tools to modify `agent.md` directly. The daemon reads the file on next agent instantiation.
+- **`mavis restart` requires the desktop app** — The daemon is owned by MiniMax Code.exe; CLI `mavis restart` is refused. To refresh skill metadata cache (e.g., after editing a `SKILL.md` frontmatter), close and reopen MiniMax Code.exe.
+- **daemon 8000-byte soft cap** — `agent.md` files > 8000 bytes may trigger silent drop on daemon restart. Currently 2 agents exceed (`mavis` 10090 / `auditor` 8397) and 1 is close (`verifier` 7893). These are not actively dropping (daemon cache still includes full content), but future daemon upgrades are a risk.
 
 ---
 
@@ -170,9 +213,16 @@ Efficient-MiniMaxCode/
 
 - [x] Complete `api-design` skill (REST status codes / pagination / auth patterns) — **done 2026-06-23**
 - [x] Complete `frontend-patterns` skill (React 19 / Next 15) — **done 2026-06-23**
-- [ ] Add `i18n` / `l10n` skill (when Mavis usage expands)
+- [x] Add 4 ESSENTIAL skill patterns from addy/matt fusion (`grill-me` / `context-engineering` / `observability-and-instrumentation` / `project-context`) — **done 2026-06-23**
+- [x] Add `git-workflow-and-versioning` (full version, multi-person ready) — **done 2026-06-23**
+- [x] Add on-demand delegation core rule to mavis orchestrator — **done 2026-06-23**
+- [x] Add `to-issues` + `implement` from mattpocock/skills — **done 2026-06-23**
+- [x] Fix P0 architect drift (live `~/.mavis/agents/architect/agent.md` 39B stub → 8668B repo content) — **done 2026-06-23**
+- [x] Fix P1: deploy planner + 3 missing skills + 7 frontmatter fixes — **done 2026-06-23** (daemon cache refresh pending MiniMax Code.exe restart)
+- [ ] Split `mavis` agent.md (10090B) into core + MEMORY.md to stay under 8000B silent-drop threshold
+- [ ] Split `auditor` agent.md (8397B) similarly
+- [ ] Add CI to validate `agent.md` sizes stay under 8000B
 - [ ] Multi-language README (English, 日本語)
-- [ ] Add CI to validate `agent.md` doesn't exceed Mavis daemon's 8000-byte `mavis agent new` limit (use `mavis agent update` workaround)
 
 ---
 
@@ -188,12 +238,7 @@ Efficient-MiniMaxCode/
 - Every `agent.md` must include: role boundary (what you do / don't do), trigger scenario, 4-principle checklist, validation closure
 - Every `SKILL.md` must include: trigger keywords (for Mavis to auto-load), core knowledge, common pitfalls
 - Don't add a new agent if an existing one already covers the role — extend the existing one instead
-
----
-
-## License
-
-[MIT](LICENSE) — Copyright (c) 2026 meisijiya
+- Don't add a new skill if it overlaps with an existing one — extend the existing one instead
 
 ---
 
@@ -204,3 +249,11 @@ Efficient-MiniMaxCode/
 - [affaan-m/ECC](https://github.com/affaan-m/ECC) — Agent harness OS design
 - [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) — 4-principle origin
 - [Vibe Coding video (BV1v9ER68EJE)](https://www.bilibili.com) — 5-decoupling practice origin
+- [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) — `git-workflow-and-versioning` + `context-engineering` + `observability-and-instrumentation` + `interview-me`
+- [mattpocock/skills](https://github.com/mattpocock/skills) — `to-issues` + `implement` + `grill-me` (融合到 spec-miner)
+
+---
+
+## License
+
+[MIT](LICENSE) — Copyright (c) 2026 meisijiya
