@@ -219,9 +219,7 @@ Efficient-MiniMaxCode/
 - [x] Add `to-issues` + `implement` from mattpocock/skills — **done 2026-06-23**
 - [x] Fix P0 architect drift (live `~/.mavis/agents/architect/agent.md` 39B stub → 8668B repo content) — **done 2026-06-23**
 - [x] Fix P1: deploy planner + 3 missing skills + 7 frontmatter fixes — **done 2026-06-23** (daemon cache refresh pending MiniMax Code.exe restart)
-- [ ] Split `mavis` agent.md (10090B) into core + MEMORY.md to stay under 8000B silent-drop threshold
-- [ ] Split `auditor` agent.md (8397B) similarly
-- [ ] Add CI to validate `agent.md` sizes stay under 8000B
+- [ ] (DEFERRED) `silent drop` 8000B threshold: **unconfirmed risk**, no current truncation observed. Don't preemptively split agents — wait for actual evidence. If daemon ever drops user overlay, address then.
 - [ ] Multi-language README (English, 日本語)
 
 ---
