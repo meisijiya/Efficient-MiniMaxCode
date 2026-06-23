@@ -129,6 +129,11 @@ These come with every Mavis Code install. Listed here for completeness.
 - **Purpose**: Matt `CONTEXT.md` pattern — project-level domain language table. mavis loads on project start, all agents share.
 - **File**: `skills/project-context/SKILL.md`
 
+### `git-workflow-and-versioning` (NEW 2026-06-23)
+- **Triggers**: git, commit, branch, merge, push, PR, conflict, worktree, gh CLI
+- **Purpose**: Adapted from addy `git-workflow-and-versioning` — Trunk-based + Conventional Commits + Worktrees (multi-person) + Java/Maven pre-commit hygiene + gh CLI toolbox. Works for 1 person or many.
+- **File**: `skills/git-workflow-and-versioning/SKILL.md`
+
 ---
 
 ## Skill 鈫?Agent Loading Map
