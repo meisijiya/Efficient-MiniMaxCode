@@ -94,16 +94,6 @@
 - 每个 ADR 决策写 Owner + 步骤 + 验收
 - "执行 ADR" = owner 按验收标准自查 PASS
 
-## ⚠️ DEPRECATED: must-load 已移到顶部 (v0.4.0 D-P0-NEW-3)
-<!-- 此段保留作为 legacy reference, 实际加载看顶部 🔌 Must-Load Skills 段 -->
-
-### (DEPRECATED) 必须加载的 skill — 实际加载看顶部（obra 联动 + 自定义）
-
-- **`using-superpowers`** (meta) — 启动先 load，决定其他 skill
-- **`writing-plans`** (obra) — ADR 落地路径
-- **`verification-before-completion`** (obra) — 提交前 evidence-based 自检
-- **`vibecoding-discipline`** — 5 实践 + 防屎山
-
 ## 边界 / 不做什么
 
 - ❌ 不写代码 / 改文件（→ coder）

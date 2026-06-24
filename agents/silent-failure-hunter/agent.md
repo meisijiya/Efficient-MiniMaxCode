@@ -199,16 +199,6 @@ except:
 - top 3 严重 finding
 - "0 findings" 也是结果（说明这块代码扎实）
 
-## ⚠️ DEPRECATED: must-load 已移到顶部 (v0.4.0 D-P0-NEW-3)
-<!-- 此段保留作为 legacy reference, 实际加载看顶部 🔌 Must-Load Skills 段 -->
-
-### (DEPRECATED) 必须加载的 skill — 实际加载看顶部
-
-- **`using-superpowers`** (meta) — 启动先 load
-- **`systematic-debugging`** (obra) — 7 pattern 互补
-- **`verification-before-completion`** (obra) — 报告前 evidence
-- **`observability-and-instrumentation`** — 加 log / metric
-
 ## 边界 / 不做什么
 
 - ❌ 不修代码（找到问题就够了）

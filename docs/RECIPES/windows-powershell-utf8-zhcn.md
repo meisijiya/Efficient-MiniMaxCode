@@ -33,10 +33,22 @@ Mavis 架构 (简化):
 
 ---
 
+## 已知限制（v0.4.1 必读）
+
+本 recipe **仅修 pwsh 7 (PowerShell 7+) 路径**，对 **Windows PowerShell 5.1 (mavis 工具链默认) 无效**：
+
+- `[Console]::OutputEncoding` 在 PS 5.1 是 `IsReadOnly: True`，profile 无法修改
+- mavis 工具链 hardcode `powershell.exe` (PS 5.1) spawn 子进程，不走 pwsh 7
+- mavis 委派 task 时仍走 PS 5.1 = 仍 mojibake
+
+**推荐路径**：
+1. 用户手开 WT tab → 用 pwsh 7（已修，OutputEncoding.CodePage=65001）
+2. mavis 委派场景 → 走 helper script `C:\Users\22923\AppData\Local\Temp\pwsh-c.py`（Python 3 stdout UTF-8 强制）
+3. 长期：mavis 工具链改 pwsh 7 spawn（FEEDBACK H-2 — 用户开 issue）
+
 ## 修复目标
 
 - **PowerShell 5.1 默认编码** → UTF-8
-- **`[Console]::OutputEncoding`** → UTF-8 (受 mavis 工具链影响, 需 chcp 65001 同步)
 - **`Get-Content / Set-Content / Out-File`** 默认 encoding → UTF-8
 - **Windows Terminal PowerShell profile** 启动时自动 chcp 65001
 
@@ -121,10 +133,11 @@ cmd.exe /K "chcp 65001 >nul && \"%SystemRoot%\\System32\\WindowsPowerShell\\v1.0
 
 ## 验证 (3 步)
 
-### 验证 1: PowerShell 启动后 [Console]::OutputEncoding
+### 验证 1: PowerShell 启动后 [Console]::InputEncoding (PS 5.1 OutputEncoding readonly)
 ```powershell
-[Console]::OutputEncoding
+[Console]::InputEncoding
 # 期望: EncodingName: Unicode (UTF-8), CodePage: 65001
+# 注: [Console]::OutputEncoding 在 PS 5.1 是 readonly, 改不了
 ```
 
 ### 验证 2: Get-Content 读 UTF-8 文件 (无 BOM)

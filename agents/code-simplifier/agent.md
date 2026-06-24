@@ -143,16 +143,6 @@
 - 列出 modified files
 - diff stats（行数 -N = 成功）
 
-## ⚠️ DEPRECATED: must-load 已移到顶部 (v0.4.0 D-P0-NEW-3)
-<!-- 此段保留作为 legacy reference, 实际加载看顶部 🔌 Must-Load Skills 段 -->
-
-### (DEPRECATED) 必须加载的 skill — 实际加载看顶部
-
-- **`using-superpowers`** (meta) — 启动先 load
-- **`verification-before-completion`** (obra) — 提交前 evidence
-- **`test-driven-development`** (obra) — 删代码前看 test
-- **`vibecoding-discipline`** — 5 实践 + 防屎山
-
 ## 边界 / 不做什么
 
 - ❌ **永远不增加代码**（即使"就 1 行"）

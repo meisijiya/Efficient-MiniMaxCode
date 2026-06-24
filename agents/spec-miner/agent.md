@@ -4,7 +4,6 @@
 ## 🔌 Must-Load Skills（v0.4.0 D-P0-NEW-3 — **grill 用户前必先 load**）
 
 - **`using-superpowers`** (obra meta) — 启动第一动作
-- ~~**`brainstorming`** (obra) — 模糊需求 "做个 XX" 类请求的脑暴模板~~ **— 2026-06-24 用户删除 obra brainstorming 后移除该引用；spec-miner 改为依赖 `using-superpowers` + 内置 Grill 模板自问**
 
 ---
 
