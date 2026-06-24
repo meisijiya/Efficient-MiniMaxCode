@@ -1,6 +1,6 @@
 ---
 name: verification-loop
-description: "目标驱动 + 验证循环。把模糊任务转成可验证的成功标准，循环到过为止。源自 karpathy 原则 4。触发词：verify, test, tdd, 验证, 循环, 目标"
+description: "【任务设计阶段专用 — NOT for code writing】目标驱动 + 验证循环：把模糊任务转成可验证的成功标准（spec-miner / planner 用），循环到过为止。源自 karpathy 原则 4。触发词：verify, success criteria, 可验证, 任务设计。**区分**: 写代码时用 test-driven-development；提交前用 verification-before-completion"
 ---
 
 # Verification Loop — 目标驱动 + 验证循环
