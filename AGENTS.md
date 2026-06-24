@@ -1,6 +1,6 @@
-﻿# Agent Index (13)
+﻿# Agent Index (16)
 
-> Last verified: 2026-06-24 | Total: 13 agents
+> Last verified: 2026-06-24 | Total: 16 agents (v0.4.2: added planner / scout / incident-responder / doc-writer)
 > Auto-regenerated from `agents/<name>/agent.md` content. This is the canonical "which agent does what" quick reference.
 
 ## Quick Reference
@@ -14,6 +14,10 @@
 | "为什么不生效" / "数据丢了" / "没报错但 XX" | `silent-failure-hunter` |
 | "代码太啰嗦" / "砍一下" / "简化" | `code-simplifier` |
 | "需求不清楚" / "先挖一个" / "做个 plan" | `spec-miner` → `planner` |
+| "出 plan" / "多 phase 实施" / "切片任务" / "vertical slice" | `planner` |
+| "摸清代码" / "代码在哪" / "X 模块做什么" / "代码库地图" | `scout` |
+| "线上挂了" / "生产报错" / "事故" / "P0" / "rollback" | `incident-responder` |
+| "写 API 文档" / "写教程" / "补 README" / "内部 wiki" | `doc-writer` |
 | "build 挂了" / "测试挂了" / "编译报错" | `build-error-resolver` |
 | "加测试" / "补测试" | `test-writer` (skill) |
 | "摸清这个模块" / "Code Map" / "这个盘干嘛的" | `code-reader` (skill) |
@@ -76,12 +80,45 @@
 - **Loads skills**: `using-superpowers`, `brainstorming`
 - **Key files**: `spec-miner/agent.md`
 
-### `planner` — Strategic Planner
+### `planner` — Implementation Plan 编排师
 - **Type**: Worker
-- **Role**: Architecture + product spec + executable plan (multi-phase, independently mergeable)
-- **Trigger**: Complex feature / refactor / architecture decision
-- **Loads skills**: `using-superpowers`, `writing-plans`, `executing-plans`
+- **Role**: 把 spec-miner 输出转成多 Phase implementation plan,vertical slice 优先(笔记启发 8)
+- **Does NOT do**: 不挖需求 / 不写代码 / 不审查 / 不做架构决策
+- **Inputs**: spec-miner(主) / mavis 直派 / 用户
+- **Outputs**: Implementation Plan(多 Phase) → mavis → coder
+- **Triggers**: 复杂特性 / 重构 / 多模块改动
+- **Loads skills**: `using-superpowers`, `writing-plans`, `to-issues`, `verification-before-completion`, `vibecoding-discipline`
 - **Key files**: `planner/agent.md`
+
+### `scout` — 只读探索员
+- **Type**: Worker
+- **Role**: 只读探索文件系统 / 代码库,返回结构化摘要(笔记启发 9:Pi Subagents Scout 等价)
+- **Does NOT do**: 不写 / 不改 / 不跑测试 / 不做修改建议
+- **Inputs**: coder(主,跑复杂任务前摸清代码库) / mavis / architect / planner
+- **Outputs**: 结构化探索摘要 → 调用方(主 agent context 不污染)
+- **Triggers**: coder 跑复杂任务 / architect 审架构前 / 用户"X 在哪"
+- **Loads skills**: `using-superpowers`, `code-reader`, `verification-before-completion`
+- **Key files**: `scout/agent.md`
+
+### `incident-responder` — 线上事故响应
+- **Type**: Worker
+- **Role**: 报警 → 定位 → 临时缓解 → 复盘。**只响应,长期修复转 coder**
+- **Does NOT do**: 不长期修代码 / 不变更生产配置 / 不写新功能
+- **Inputs**: 用户(主) / mavis / release-manager / silent-failure-hunter(转交)
+- **Outputs**: incident report → 用户 + coder + meta-writer(post-mortem)
+- **Triggers**: 用户报事故 / 监控告警 / sfh 转交 / 发布后立刻发现问题
+- **Loads skills**: `using-superpowers`, `observability-and-instrumentation`, `systematic-debugging`, `silent-failure-hunter`, `verification-before-completion`
+- **Key files**: `incident-responder/agent.md`
+
+### `doc-writer` — 技术文档专职
+- **Type**: Worker
+- **Role**: 写技术文档(API 文档 / 教程 / README / 内部 wiki)。**不写元信息(归 meta-writer)**
+- **Does NOT do**: 不写 ADR/DECISIONS/KNOWLEDGE / 不写代码 / 不写 spec / 不审查内容正确性
+- **Inputs**: mavis / coder(写完功能后) / 用户
+- **Outputs**: 技术文档 → mavis / 用户 / 项目 docs/
+- **Triggers**: 用户"写 API 文档" / coder 写完功能后补文档
+- **Loads skills**: `using-superpowers`, `writing-skills`, `ai-eraser-skills`, `verification-before-completion`
+- **Key files**: `doc-writer/agent.md`
 
 ### `build-error-resolver` — Build Error Fixer
 - **Type**: Worker
@@ -149,7 +186,10 @@ See `mavis/agent.md` (routing table section) for the full decision tree.
 | `silent-failure-hunter` | systematic-debugging, using-superpowers | 找 silent failure 前 |
 | `code-simplifier` | test-driven-development, verification-before-completion, vibecoding-discipline | 删前看 test |
 | `spec-miner` | brainstorming | 挖需求前 |
-| `planner` | writing-plans, executing-plans | 出 plan 前 |
+| `planner` | writing-plans, to-issues, verification-before-completion, vibecoding-discipline | 出 plan 前 |
+| `scout` | code-reader, verification-before-completion | 探索前 |
+| `incident-responder` | observability-and-instrumentation, systematic-debugging, silent-failure-hunter, verification-before-completion | 响应事故前 |
+| `doc-writer` | writing-skills, ai-eraser-skills, verification-before-completion | 写文档前 |
 | `build-error-resolver` | systematic-debugging, test-driven-development, verification-before-completion | 跑+修前 |
 | `meta-writer` | writing-plans, verification-before-completion | 写 ADR 前 |
 | `auditor` | verification-before-completion | 审计前 |
