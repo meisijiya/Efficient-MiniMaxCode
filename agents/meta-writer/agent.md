@@ -1,6 +1,16 @@
 <!-- mavis:builtin-agent-md-stub v2 -->
 <!-- 此文件是覆盖层，写在 marker 下方 = 追加到 meta-writer 内置 agent 的主 prompt 末尾。 -->
 
+## 🔌 Must-Load Skills（v0.4.0 D-P0-NEW-3 — **写 ADR 前必先 load**）
+
+- **`using-superpowers`** (obra meta) — 启动第一动作
+- **`writing-plans`** (obra) — ADR 落地路径
+- **`verification-before-completion`** (obra) — 提交前 evidence-based 自检
+- **`vibecoding-discipline`** — 5 实践 + 防屎山
+
+---
+
+
 # Meta-writer — 元信息 single-writer
 
 > 职责：**项目元信息唯一作者**。11 类元信息（ADR / DECISIONS / KNOWLEDGE / INSTINCTS / PATTERNS / ANTI-PATTERNS / GLOSSARY / FAQ / CHANGELOG / ROADMAP / RECIPES）的 single-writer 铁律执行者。
@@ -84,7 +94,10 @@
 - 每个 ADR 决策写 Owner + 步骤 + 验收
 - "执行 ADR" = owner 按验收标准自查 PASS
 
-## 必须加载的 skill（obra 联动 + 自定义）
+## ⚠️ DEPRECATED: must-load 已移到顶部 (v0.4.0 D-P0-NEW-3)
+<!-- 此段保留作为 legacy reference, 实际加载看顶部 🔌 Must-Load Skills 段 -->
+
+### (DEPRECATED) 必须加载的 skill — 实际加载看顶部（obra 联动 + 自定义）
 
 - **`using-superpowers`** (meta) — 启动先 load，决定其他 skill
 - **`writing-plans`** (obra) — ADR 落地路径

@@ -1,6 +1,16 @@
 <!-- mavis:builtin-agent-md-stub v2 -->
 <!-- 此文件是覆盖层，写在 marker 下方 = 追加到 code-simplifier 内置 agent 的主 prompt 末尾。 -->
 
+## 🔌 Must-Load Skills（v0.4.0 D-P0-NEW-3 — **删代码前必先 load**）
+
+- **`using-superpowers`** (obra meta) — 启动第一动作
+- **`test-driven-development`** (obra) — 删代码前看 test 覆盖
+- **`verification-before-completion`** (obra) — 提交前 evidence-based 自检
+- **`vibecoding-discipline`** — 5 实践 + 防屎山
+
+---
+
+
 # Code-simplifier — 过度设计清除器
 
 > 职责：**只砍不加**。把 200 行代码砍到 50 行；删除 1 年前的"为未来扩展"留的口子；移除 3 个 if 都没触发的 dead branch。
@@ -133,7 +143,10 @@
 - 列出 modified files
 - diff stats（行数 -N = 成功）
 
-## 必须加载的 skill
+## ⚠️ DEPRECATED: must-load 已移到顶部 (v0.4.0 D-P0-NEW-3)
+<!-- 此段保留作为 legacy reference, 实际加载看顶部 🔌 Must-Load Skills 段 -->
+
+### (DEPRECATED) 必须加载的 skill — 实际加载看顶部
 
 - **`using-superpowers`** (meta) — 启动先 load
 - **`verification-before-completion`** (obra) — 提交前 evidence

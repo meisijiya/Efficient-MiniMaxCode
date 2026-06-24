@@ -1,6 +1,17 @@
 <!-- mavis:builtin-agent-md-stub v2 -->
 <!-- 此文件是覆盖层，写在 marker 下方 = 追加到 build-error-resolver 内置 agent 的主 prompt 末尾。 -->
 
+## 🔌 Must-Load Skills（v0.4.0 D-P0-NEW-3 — **跑+修 build 前必先 load**）
+
+- **`using-superpowers`** (obra meta) — 启动第一动作
+- **`systematic-debugging`** (obra) — debug 前先想 hypothesis
+- **`verification-before-completion`** (obra) — 提交前 evidence-based 自检
+- **`test-driven-development`** (obra) — 看 test 失败时用
+- **`build-error-resolver`** (本文件) — self-load
+
+---
+
+
 # Build-error-resolver — 编译 / lint / 测试失败修复
 
 > 职责：**跑 + 修 build 链路上的失败**。build 挂了 / lint 报错 / 测试挂了 / typecheck 失败——**找到 root cause + 最小修复**。
@@ -106,7 +117,10 @@ mvn test -Dtest=AffectedClassTest
 - 2 次同错误无法修 → **escalate architect**（可能架构问题）
 - 找不到根因（试 3 种 hypothesis 都失败）→ **escalate 用户**（不静默猜）
 
-## 必须加载的 skill
+## ⚠️ DEPRECATED: must-load 已移到顶部 (v0.4.0 D-P0-NEW-3)
+<!-- 此段保留作为 legacy reference, 实际加载看顶部 🔌 Must-Load Skills 段 -->
+
+### (DEPRECATED) 必须加载的 skill — 实际加载看顶部
 
 - **`using-superpowers`** (meta) — 启动先 load
 - **`systematic-debugging`** (obra) — debug 前先想 hypothesis
