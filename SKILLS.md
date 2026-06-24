@@ -1,4 +1,4 @@
-﻿# Skill Index (52)
+﻿# Skill Index (56)
 
 > This index is auto-generated from the actual `SKILL.md` content. Use it as a quick reference for "which skill should I load for XX task".
 
@@ -53,6 +53,10 @@
 | Distinguish Spec (contract) vs Harness (executable test) | `spec-vs-harness` |
 | Present options + reasoning, let user adjudicate | `user-as-adjudicator` |
 | Automate browser / web scraping / OCR / PDF extraction | `web-automation` |
+| Formalize user correction as spec/skill after 3rd repetition | `spec-from-correction` |
+| Make agent prompts resist LLM drift (U-shape + anchor + anti-example) | `prompt-hardening` |
+| Design modules with simple interface + deep implementation (Ousterhout) | `deep-modules` |
+| 3-layer model routing (N/A in MiniMax Code; cross-platform reference) | `3-layer-router` |
 
 ---
 
@@ -175,6 +179,30 @@ These come with every Mavis Code install. Listed here for completeness.
 - **File**: `skills/context-reset/SKILL.md`
 - **Must read for**: `verifier` / `architect` / `spec-miner` / `mavis` (post-implementation review; pre-major-decision)
 
+### `spec-from-correction` (NEW 2026-06-24)
+- **Triggers**: rule of three, 重复纠正, 反复修改, 同类问题, 沉淀规则, formalize correction, INSTINCTS
+- **Purpose**: Rule-of-three for spec/skill authoring — when user corrects the same kind of mistake 3 times, formalize it as spec / skill / ADR / INSTINCTS instead of letting it repeat. Trigger + capture template + filing location matrix included.
+- **File**: `skills/spec-from-correction/SKILL.md`
+- **Must read for**: `meta-writer` (when formalizing rules) + `spec-miner` (when user corrects spec repeatedly)
+
+### `prompt-hardening` (NEW 2026-06-24)
+- **Triggers**: prompt hardening, prompt 漂移, U 型注意力, 注意力衰减, 强 prompt, 硬约束, anchor, 约束漂移, persona drift
+- **Purpose**: Make agent prompts resist LLM drift beyond vocabulary (must/never/禁止) — 6 structural techniques: persona anchor top+bottom, constraint 3-tier, anti-example pairs, explicit context window markers, trigger keywords, cost table for trade-offs.
+- **File**: `skills/prompt-hardening/SKILL.md`
+- **Must read for**: `meta-writer` (writing ADR / agent.md / SKILL.md) + `create-agent` (new agent system prompt)
+
+### `deep-modules` (NEW 2026-06-24)
+- **Triggers**: deep module, shallow module, Ousterhout, philosophy of software design, 接口简单, 实现深, complexity, 模块边界, 复杂度平方
+- **Purpose**: John Ousterhout's deep modules — simple interface + deep implementation + power ratio ≥ 20:1. Module audit template (interface vs implementation count) + refactor shallow → deep patterns + when NOT to apply.
+- **File**: `skills/deep-modules/SKILL.md`
+- **Must read for**: `architect` (designing new modules) + `coder` (evaluating existing module quality)
+
+### `3-layer-router` (NEW 2026-06-24, **N/A in MiniMax Code**)
+- **Triggers**: 3-layer router, model tier, haiku sonnet opus, per-agent model, cost optimization
+- **Purpose**: **NOT APPLICABLE in MiniMax Code** (uniform m3 model across all 16 agents per `mavis` MEMORY 2026-06-24). Kept as cross-platform reference for porting Mavis team to Claude Code / Cursor / opencode where per-agent tiering saves 3-5x cost.
+- **File**: `skills/3-layer-router/SKILL.md`
+- **Must read for**: cross-platform port only (do not load in MiniMax Code runtime)
+
 ### `agent-raci` (NEW 2026-06-24)
 - **Triggers**: 职责契约, 专职专责, 对接协调, RACI, 边界划分, agent 模板
 - **Purpose**: Canonical "职责契约" template (专职 / 专责 / Inputs / Outputs / 协调) for ALL Mavis agents. Use when creating a new agent.md or refactoring an existing agent's role boundaries.
@@ -255,16 +283,16 @@ These come with every Mavis Code install. Listed here for completeness.
 
 | Agent | Skills it MUST load |
 |-------|---------------------|
-| `coder` | `vibecoding-discipline` + `verification-loop` + `search-first` (第三方库) + `context-engineering` + `backend-patterns-{java OR python OR ts}` + `database-patterns` (if SQL) + `api-design` (if API) |
+| `coder` | `vibecoding-discipline` + `verification-loop` + `search-first` (第三方库) + `context-engineering` + `backend-patterns-{java OR python OR ts}` + `database-patterns` (if SQL) + `api-design` (if API) + `deep-modules` (evaluate module quality) |
 | `verifier` | `vibecoding-discipline` + `verification-loop` + `context-engineering` + `context-reset` (post-implementation review) |
-| `architect` | `vibecoding-discipline` + `context-engineering` + `api-design` (if API) + `database-patterns` (if schema) + `context-reset` (pre-architecture-decision) |
+| `architect` | `vibecoding-discipline` + `context-engineering` + `api-design` (if API) + `database-patterns` (if schema) + `context-reset` (pre-architecture-decision) + `deep-modules` (module audit on every design) |
 | `silent-failure-hunter` | `vibecoding-discipline` (composition > inheritance for safety) + `observability-and-instrumentation` (看是否有 silent failure 埋点) |
 | `code-simplifier` | `vibecoding-discipline` + `verification-loop` |
 | `test-writer` (skill, not agent) | `vibecoding-discipline` + `verification-loop` |
-| `meta-writer` | `vibecoding-discipline` (single-writer iron rule) + `context-engineering` (ADR 格式) + `hard-constraints` (strong ADR prompts) |
+| `meta-writer` | `vibecoding-discipline` (single-writer iron rule) + `context-engineering` (ADR 格式) + `hard-constraints` (vocabulary) + `prompt-hardening` (structural) + `spec-from-correction` (rule-of-three capture) |
 | `auditor` | `vibecoding-discipline` + `api-design` (if API) + `database-patterns` (if SQL) + `observability-and-instrumentation` |
 | `release-manager` | `vibecoding-discipline` + `verification-loop` + `observability-and-instrumentation` (4 项 checklist) |
-| `spec-miner` | `grill-me` (必 load) + `vibecoding-discipline` + `project-context` (如果项目有 CONTEXT.md) + `context-reset` (final spec review) + `mvp-vs-long-term` (spec depth) + `spec-vs-harness` (what to formalize) |
+| `spec-miner` | `grill-me` (必 load) + `vibecoding-discipline` + `project-context` (如果项目有 CONTEXT.md) + `context-reset` (final spec review) + `mvp-vs-long-term` (spec depth) + `spec-vs-harness` (what to formalize) + `spec-from-correction` (capture repeated user corrections) |
 | `planner` | `vibecoding-discipline` + `context-engineering` |
 | `mavis` (orchestrator) | `vibecoding-discipline` + `context-engineering` + `project-context` (启动时 load) + `context-reset` (pre-major-decision) + `self-hygiene` (context > 60%) + `user-as-adjudicator` (present options, do not decide) + `handoff` (end long session with pending work) |
 | `coder` (when implementing from PRD/issues) | `implement` (6-step SOP: plan → TDD → typecheck → test → review → commit) + `to-issues` (if slicing a big spec) |
