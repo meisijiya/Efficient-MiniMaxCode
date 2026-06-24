@@ -182,4 +182,4 @@ This collection is **not perfect**. Known issues:
 - [ ] Add an `examples/` directory showing real 7-step pipeline runs
 - [ ] Add a `CONTRIBUTING.md` with agent / skill authoring guide
 - [ ] Add `instincts/` to repo (currently project-level only)
-- [ ] Backfill 5 skill gaps (3-layer router / spec-from-correction / context-reset / prompt-hardening / deep-modules)
+- [x] Backfill 5 skill gaps (3-layer router / spec-from-correction / context-reset / prompt-hardening / deep-modules) — **done 2026-06-24** in commits `844d6b1` + `dead5b3` (3-layer-router is N/A stub for MiniMax Code uniform m3)
