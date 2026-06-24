@@ -1,4 +1,4 @@
-﻿# Skill Index (44)
+﻿# Skill Index (52)
 
 > This index is auto-generated from the actual `SKILL.md` content. Use it as a quick reference for "which skill should I load for XX task".
 
@@ -45,6 +45,14 @@
 | Use git worktrees for isolation | `using-git-worktrees` |
 | Finish dev branch (merge/PR/keep/discard) | `finishing-a-development-branch` |
 | Write / edit skills following best practice | `writing-skills` |
+| Define agent role boundaries (专职 / 专责 / 协调) | `agent-raci` |
+| Hand off unfinished work to a fresh session | `handoff` |
+| Write strong prompts with hard-constraint vocabulary | `hard-constraints` |
+| Decide spec density at MVP vs long-term iteration | `mvp-vs-long-term` |
+| Self-hygiene for Mavis long-context sessions | `self-hygiene` |
+| Distinguish Spec (contract) vs Harness (executable test) | `spec-vs-harness` |
+| Present options + reasoning, let user adjudicate | `user-as-adjudicator` |
+| Automate browser / web scraping / OCR / PDF extraction | `web-automation` |
 
 ---
 
@@ -167,6 +175,54 @@ These come with every Mavis Code install. Listed here for completeness.
 - **File**: `skills/context-reset/SKILL.md`
 - **Must read for**: `verifier` / `architect` / `spec-miner` / `mavis` (post-implementation review; pre-major-decision)
 
+### `agent-raci` (NEW 2026-06-24)
+- **Triggers**: 职责契约, 专职专责, 对接协调, RACI, 边界划分, agent 模板
+- **Purpose**: Canonical "职责契约" template (专职 / 专责 / Inputs / Outputs / 协调) for ALL Mavis agents. Use when creating a new agent.md or refactoring an existing agent's role boundaries.
+- **File**: `skills/agent-raci/SKILL.md`
+- **Must read for**: `create-agent` (skill) when designing new agent or refactoring existing role
+
+### `handoff` (NEW 2026-06-24)
+- **Triggers**: handoff, 交接, 上下文压缩, session 切换, 上下文传递
+- **Purpose**: Compact the current conversation into a handoff document for another agent to pick up. Use when ending session with unfinished work / preparing context for fresh session / delegating remaining tasks / preserving conversation state.
+- **File**: `skills/handoff/SKILL.md`
+- **Must read for**: `mavis` when ending long session with pending work
+
+### `hard-constraints` (NEW 2026-06-24)
+- **Triggers**: hard constraint, 硬约束, 软约束, U 型曲线, must, never, 禁止, 务必, 强 prompt, 注意力涣散
+- **Purpose**: Write strong agent prompts / SKILL.md with hard-constraint vocabulary (must / never / 禁止 / 务必). Use when creating or refactoring agent.md / SKILL.md / system prompts where adherence matters.
+- **File**: `skills/hard-constraints/SKILL.md`
+- **Must read for**: `meta-writer` (writing strong ADR prompts) + `create-agent` (new agent system prompt)
+
+### `mvp-vs-long-term` (NEW 2026-06-24)
+- **Triggers**: MVP, charter, 宪章, 长期迭代, spec density, 收紧, 项目边界, scope creep
+- **Purpose**: Different spec density at MVP vs long-term iteration phases. MVP = Project Charter only (what / what NOT). Long-term = Spec + Harness double lock.
+- **File**: `skills/mvp-vs-long-term/SKILL.md`
+- **Must read for**: `spec-miner` (when deciding spec depth at project kickoff)
+
+### `self-hygiene` (NEW 2026-06-24)
+- **Triggers**: self hygiene, mavis long context, context reset, Dumb Zone, 上下文卫生, 主动重置, context budget, mavis 自指
+- **Purpose**: Mavis self-hygiene for long-context runs. Prevent Mavis itself from entering Dumb Zone. SOP for context reset / summary / context budget.
+- **File**: `skills/self-hygiene/SKILL.md`
+- **Must read for**: `mavis` (when context > 60% full)
+
+### `spec-vs-harness` (NEW 2026-06-24)
+- **Triggers**: spec, harness, 规格, 决定, 锁住, spec 生长, 契约, single source of truth
+- **Purpose**: Distinguish Spec (drawing) vs Harness (workshop). Spec = natural-language contract, Harness = executable test that locks the spec. Spec grows from repeated principle corrections.
+- **File**: `skills/spec-vs-harness/SKILL.md`
+- **Must read for**: `spec-miner` (deciding what to formalize as spec vs harness test)
+
+### `user-as-adjudicator` (NEW 2026-06-24)
+- **Triggers**: 裁定, adjudicator, 用户决定, 拍板, 选项, 决策, ask_user, 不替用户拍板
+- **Purpose**: User is the adjudicator, not the writer. Mavis should present options + reasoning, NOT decide for user. Which decision is truly stable is the user's unique value.
+- **File**: `skills/user-as-adjudicator/SKILL.md`
+- **Must read for**: `mavis` (when 2+ options are stable, present + recommend + ask_user)
+
+### `web-automation` (NEW 2026-06-24)
+- **Triggers**: web automation, Playwright, browser-use, PaddleOCR, MinerU, 反爬, 浏览器自动化, 网页抓取, OCR, 文档解析
+- **Purpose**: Unified web automation — Playwright browser control + browser-use LLM interaction + PaddleOCR image recognition + MinerU document parsing. Browsing / interaction / info extraction / OCR / PDF parsing / anti-bot.
+- **File**: `skills/web-automation/SKILL.md`
+- **Must read for**: `coder` when task involves browser automation / web scraping / OCR / PDF extraction
+
 ### `obra/superpowers` 14-skill framework (NEW 2026-06-24)
 - **Source**: [obra/superpowers](https://github.com/obra/superpowers) (237k stars, the de facto agentic skills framework)
 - **Purpose**: Complete software development methodology — replaces `brainstorming` (mavis builtin) and `test-writer` with obra's verified versions; adds 12 more skills covering the full dev lifecycle.
@@ -205,12 +261,12 @@ These come with every Mavis Code install. Listed here for completeness.
 | `silent-failure-hunter` | `vibecoding-discipline` (composition > inheritance for safety) + `observability-and-instrumentation` (看是否有 silent failure 埋点) |
 | `code-simplifier` | `vibecoding-discipline` + `verification-loop` |
 | `test-writer` (skill, not agent) | `vibecoding-discipline` + `verification-loop` |
-| `meta-writer` | `vibecoding-discipline` (single-writer iron rule) + `context-engineering` (ADR 格式) |
+| `meta-writer` | `vibecoding-discipline` (single-writer iron rule) + `context-engineering` (ADR 格式) + `hard-constraints` (strong ADR prompts) |
 | `auditor` | `vibecoding-discipline` + `api-design` (if API) + `database-patterns` (if SQL) + `observability-and-instrumentation` |
 | `release-manager` | `vibecoding-discipline` + `verification-loop` + `observability-and-instrumentation` (4 项 checklist) |
-| `spec-miner` | `grill-me` (必 load) + `vibecoding-discipline` + `project-context` (如果项目有 CONTEXT.md) + `context-reset` (final spec review) |
+| `spec-miner` | `grill-me` (必 load) + `vibecoding-discipline` + `project-context` (如果项目有 CONTEXT.md) + `context-reset` (final spec review) + `mvp-vs-long-term` (spec depth) + `spec-vs-harness` (what to formalize) |
 | `planner` | `vibecoding-discipline` + `context-engineering` |
-| `mavis` (orchestrator) | `vibecoding-discipline` + `context-engineering` + `project-context` (启动时 load) + `context-reset` (pre-major-decision) |
+| `mavis` (orchestrator) | `vibecoding-discipline` + `context-engineering` + `project-context` (启动时 load) + `context-reset` (pre-major-decision) + `self-hygiene` (context > 60%) + `user-as-adjudicator` (present options, do not decide) + `handoff` (end long session with pending work) |
 | `coder` (when implementing from PRD/issues) | `implement` (6-step SOP: plan → TDD → typecheck → test → review → commit) + `to-issues` (if slicing a big spec) |
 
 See individual `agents/<name>/agent.md` for the explicit loading instructions.
