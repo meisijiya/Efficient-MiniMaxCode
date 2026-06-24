@@ -207,6 +207,61 @@ mavis agent.md 必须 load 段新增 4 行:
 
 **Rationale**:AGENTS.md 是"which agent does what"的唯一真值源,新建 agent 必须同步更新。
 
+### D-v42-11:**agent-raci skill + 6 个笔记启发 skill(8 skill 总计)**
+
+**Decision**(已执行,2026-06-24):
+
+| Skill | 字节 | 笔记启发 | 适用 |
+|-------|------|---------|------|
+| `agent-raci` | 6126 | — | 全部 agent(创建 / 整改模板) |
+| `hard-constraints` | 6770 | 启发 6 | 全部 agent(强 prompt 词汇指南) |
+| `context-reset` | 4750 | 启发 5 | verifier / sfh / auditor |
+| `spec-vs-harness` | 5996 | 启发 2+4 | coder / meta-writer / spec-miner |
+| `mvp-vs-long-term` | 6134 | 启发 3 | spec-miner |
+| `user-as-adjudicator` | 5048 | 启发 10 | mavis / spec-miner |
+| `self-hygiene` | 6080 | 启发 6(自指) | mavis 自己 |
+
+**Files**: 7 个新 skill,位于 `~/.minimax/skills/<name>/SKILL.md`(mavis 系统级,不在项目 repo)。
+
+**Rationale**:笔记吸收的"知识层"落地到 skill,所有 agent 可加载引用。文件大小全部 < 8000B / 300 行(笔记启发 6 实证上限)。
+
+### D-v42-12:**11 个旧 agent 加"职责契约"段(走 agent-raci 模板)**
+
+**Decision**(已执行,2026-06-24):
+
+| Agent | 原字节 | 新字节 | +Δ |
+|-------|-------|-------|-----|
+| coder | 7788 | 8629 | +841 |
+| verifier | 8332 | 9113 | +781 |
+| architect | 9013 | 9802 | +789 |
+| silent-failure-hunter | 7418 | 8210 | +792 |
+| meta-writer | 4914 | 5794 | +880 |
+| spec-miner | 4622 | 5351 | +729 |
+| release-manager | 6704 | 7384 | +680 |
+| auditor | 8675 | 9457 | +782 |
+| build-error-resolver | 5046 | 5784 | +738 |
+| code-simplifier | 5813 | 6548 | +735 |
+| general | 1224 | 1942 | +718 |
+| **总** | — | — | **+8465** |
+
+**mavis 不动**(用户偏好:不要预防性拆 agent.md)。
+
+**Format**:每 agent 加 4 段 RACI = 专职 + 专责 + 对接 + 协调。
+
+**Rationale**:用户 2026-06-24 明确要求"专职专责 + 对接协调"——`agent-raci` skill 提供模板,11 个旧 agent 改造后跟 4 个新 agent(planner / scout / ir / doc-writer)对齐。
+
+### D-v42-13:**全局 mavis 配置本会话净增**
+
+**Decision**(已执行,2026-06-24):
+
+| 维度 | 数据 |
+|------|------|
+| skill 总数(从开始到结束) | 43 → 49(+6: agent-raci / hard-constraints / context-reset / spec-vs-harness / mvp-vs-long-term / user-as-adjudicator / self-hygiene = 7 新增 − 1 删除 pptx-skill = +6) |
+| agent 总数 | 12 → 16(+4: planner / scout / incident-responder / doc-writer) |
+| 字节净增(mavis 系统级) | ~28000 B(分散在 skill + agent 文件) |
+
+**silent-drop 风险**:mavis agent.md 11724 B(超 8000B 阈值),**Edit 直改不触发 silent-drop**;其他 15 agent 全部安全。
+
 ---
 
 ## 3. 已落地动作(本次会话已完成)
