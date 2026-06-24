@@ -1,9 +1,9 @@
 # Efficient-MiniMaxCode
 
-> A curated collection of **13 specialized agents** and **31 production-ready skills** for [Mavis Code](https://github.com/) — built to help a single developer ship like a full engineering team.
+> A curated collection of **13 specialized agents** and **43 production-ready skills** for [Mavis Code](https://github.com/) — built to help a single developer ship like a full engineering team.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Mavis Agents](https://img.shields.io/badge/agents-13-blue)]() [![Skills](https://img.shields.io/badge/skills-31-green)]()
+[![Mavis Agents](https://img.shields.io/badge/agents-13-blue)]() [![Skills](https://img.shields.io/badge/skills-43-green)]()
 
 ---
 
@@ -29,7 +29,7 @@ This repository is a **portable, version-controlled backup** of a Mavis Code age
 | **Release** | `release-manager` | commit / changelog / tag / deploy check / rollback |
 | **Fallback** | `general` | Generic worker (routes to specialists when needed) |
 
-### 31 Skills (Mavis Code compatible)
+### 43 Skills (Mavis Code compatible)
 
 **Built-in (10)** — provided by Mavis:
 `ai-coder` · `ai-eraser-skills` · `ai-short-drama-director` · `brainstorming` · `knowledge-digest` · `minimax-xlsx` · `office-document-specialist-suite` · `pptx-skill` · `prd-to-prototype` · `story-video-generator`
@@ -40,13 +40,13 @@ This repository is a **portable, version-controlled backup** of a Mavis Code age
 `backend-patterns-java` · `backend-patterns-python` · `backend-patterns-typescript` · `database-patterns` · `frontend-patterns` · `api-design`
 
 **Code reading / review / discipline (5)**:
-`code-reader` · `test-writer` · `performance-analyzer` · `vibecoding-discipline` (5-decoupling-practice) · `silent-failure-hunter`-adjacent (`silent-failure-hunter` is an agent, not a skill)
+`code-reader` · `performance-analyzer` · `vibecoding-discipline` (5-decoupling-practice) · `grill-me` (需求深挖 — addy + matt fusion) · `context-engineering` · `observability-and-instrumentation` · `project-context` · `git-workflow-and-versioning`
 
-**Workflow / planning / delegation (5)**:
+**Workflow / planning / delegation (4)**:
 `plan-workflow` (`/plan` command) · `search-first` (think-before-coding) · `verification-loop` (goal-driven validation) · `to-issues` (vertical-slice issue splitter, from mattpocock/skills) · `implement` (PRD → code 6-step SOP, from mattpocock/skills)
 
-**Project context / engineering practice (5)**:
-`grill-me` (需求深挖 — addy + matt fusion) · `context-engineering` (right info at right time) · `observability-and-instrumentation` (RED metrics + OpenTelemetry) · `project-context` (CONTEXT.md domain language) · `git-workflow-and-versioning` (trunk-based + worktrees + gh CLI)
+**From [obra/superpowers](https://github.com/obra/superpowers) (14 skills, 237k stars)** — installed byte-exact, replaces `test-writer` + mavis builtin `brainstorming`:
+`using-superpowers` (meta-skill, mandatory trigger) · `brainstorming` · `writing-plans` · `executing-plans` · `subagent-driven-development` · `dispatching-parallel-agents` · `test-driven-development` · `systematic-debugging` · `requesting-code-review` · `receiving-code-review` · `using-git-worktrees` · `finishing-a-development-branch` · `verification-before-completion` · `writing-skills`
 
 See [SKILLS.md](SKILLS.md) for the full list with trigger keywords.
 
@@ -218,6 +218,7 @@ Efficient-MiniMaxCode/
 - [x] Add on-demand delegation core rule to mavis orchestrator — **done 2026-06-23**
 - [x] Add `to-issues` + `implement` from mattpocock/skills — **done 2026-06-23**
 - [x] Fix P0 architect drift (live `~/.mavis/agents/architect/agent.md` 39B stub → 8668B repo content) — **done 2026-06-23**
+- [x] Adopt **obra/superpowers** 14-skill framework (237k stars) — **done 2026-06-24** (replaces `test-writer` + mavis builtin `brainstorming`; adds 12 more; `using-superpowers` meta-skill fixes "skill 不经常触发" problem)
 - [x] Fix P1: deploy planner + 3 missing skills + 7 frontmatter fixes — **done 2026-06-23** (daemon cache refresh pending MiniMax Code.exe restart)
 - [ ] (DEFERRED) `silent drop` 8000B threshold: **unconfirmed risk**, no current truncation observed. Don't preemptively split agents — wait for actual evidence. If daemon ever drops user overlay, address then.
 - [ ] Multi-language README (English, 日本語)
@@ -249,6 +250,7 @@ Efficient-MiniMaxCode/
 - [Vibe Coding video (BV1v9ER68EJE)](https://www.bilibili.com) — 5-decoupling practice origin
 - [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) — `git-workflow-and-versioning` + `context-engineering` + `observability-and-instrumentation` + `interview-me`
 - [mattpocock/skills](https://github.com/mattpocock/skills) — `to-issues` + `implement` + `grill-me` (融合到 spec-miner)
+- [obra/superpowers](https://github.com/obra/superpowers) (237k stars) — 14-skill complete dev methodology, byte-exact adopted
 
 ---
 

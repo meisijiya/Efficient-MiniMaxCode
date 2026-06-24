@@ -1,4 +1,4 @@
-﻿# Skill Index (23)
+﻿# Skill Index (43)
 
 > This index is auto-generated from the actual `SKILL.md` content. Use it as a quick reference for "which skill should I load for XX task".
 
@@ -30,6 +30,20 @@
 | Generate story video | `story-video-generator` |
 | Split spec / PRD into vertical-slice issues | `to-issues` |
 | Implement PRD / issues into code (TDD SOP) | `implement` |
+| **Superpowers framework** (mandatory at conversation start) | `using-superpowers` |
+| Brainstorm before creative work | `brainstorming` (obra) |
+| Write implementation plan | `writing-plans` |
+| Execute plan with checkpoints | `executing-plans` |
+| Multi-task subagent execution + 2-stage review | `subagent-driven-development` |
+| Dispatch 2+ independent tasks in parallel | `dispatching-parallel-agents` |
+| Test-driven development (RED-GREEN-REFACTOR) | `test-driven-development` |
+| Debug systematically (4-phase root cause) | `systematic-debugging` |
+| Request code review | `requesting-code-review` |
+| Receive / respond to review feedback | `receiving-code-review` |
+| Verify before claiming complete | `verification-before-completion` |
+| Use git worktrees for isolation | `using-git-worktrees` |
+| Finish dev branch (merge/PR/keep/discard) | `finishing-a-development-branch` |
+| Write / edit skills following best practice | `writing-skills` |
 
 ---
 
@@ -145,6 +159,32 @@ These come with every Mavis Code install. Listed here for completeness.
 - **Triggers**: implement, 实施, 落地, 实现, plan-to-code, PRD-to-code, spec-to-code, issue-to-code, TDD流程, 编码流程
 - **Purpose**: Adapted from mattpocock/skills `engineering/implement` (14 lines) — expanded to full SOP: plan → TDD → typecheck → test → review → commit. Coordinates coder + test-writer + verifier + build-error-resolver.
 - **File**: `skills/implement/SKILL.md`
+
+### `obra/superpowers` 14-skill framework (NEW 2026-06-24)
+- **Source**: [obra/superpowers](https://github.com/obra/superpowers) (237k stars, the de facto agentic skills framework)
+- **Purpose**: Complete software development methodology — replaces `brainstorming` (mavis builtin) and `test-writer` with obra's verified versions; adds 12 more skills covering the full dev lifecycle.
+- **Meta-skill**: `using-superpowers` mandates skill invocation before ANY response — fixes the "skill 不经常触发" problem.
+
+**14 skills installed (byte-exact from obra/superpowers)**:
+
+| Skill | Purpose | Replaces / Adds |
+|-------|---------|-----------------|
+| `using-superpowers` | Mandatory skill invocation at conversation start | **NEW** (meta-skill, fixes trigger problem) |
+| `brainstorming` | Refine ideas through Socratic dialogue before code | **REPLACES** mavis builtin `brainstorming` |
+| `writing-plans` | Break spec into bite-sized (2-5 min) tasks with TDD steps | **NEW** (complements `plan-workflow`) |
+| `subagent-driven-development` | Each task = fresh subagent + 2-stage review (spec compliance → code quality) | **NEW** (validates our `mavis team plan` pattern) |
+| `executing-plans` | Execute plan in separate session with checkpoints | **NEW** |
+| `dispatching-parallel-agents` | Spawn multiple agents for independent tasks | **NEW** (validates our `max_concurrency: 3` pattern) |
+| `test-driven-development` | Strict RED-GREEN-REFACTOR; no production code without failing test | **REPLACES** `test-writer` |
+| `systematic-debugging` | 4-phase root cause investigation before proposing fixes | **NEW** (complements `silent-failure-hunter`) |
+| `requesting-code-review` | Pre-review checklist; request review between tasks / before merge | **NEW** (validates our `verifier` pattern) |
+| `receiving-code-review` | Technical rigor over performative agreement; verify before implementing | **NEW** (防 AI 表演性回应) |
+| `using-git-worktrees` | Isolated workspace via native tools or git worktree fallback | **NEW** (complements `git-workflow-and-versioning`) |
+| `finishing-a-development-branch` | Merge / PR / keep / discard structured options | **NEW** (complements `release-manager`) |
+| `verification-before-completion` | Run verification command + read output before claiming success | **NEW** (complements `verification-loop`) |
+| `writing-skills` | Skill creation methodology with TDD-like pressure scenarios | **NEW** (complements `create-agent`) |
+
+**Removed**: `test-writer` (replaced by `test-driven-development` — obra's TDD is stricter)
 
 ---
 
