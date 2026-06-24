@@ -138,7 +138,10 @@ The installer will:
 .\verify.ps1
 ```
 
-You should see all 13 agents listed in `mavis agent list` and all 23 skills loaded.
+You should see all 16 agents listed in `mavis agent list` and all 43 skills loaded.
+
+> **v0.4.2 update**: 13→16 agents(planner / scout / incident-responder / doc-writer 入库)
+> **v0.4.3 update**: 23→43 skills(delegation-sop + 8 conflict cluster 清理 + 5 gap 评估)
 
 ### Step 4: Restart Mavis Code (optional)
 
@@ -206,6 +209,7 @@ The uninstaller will:
 1. Make sure you copied to the **correct** `~/.mavis/` path
 2. Restart Mavis Code (or `mavis daemon restart`)
 3. Check the file structure: `<name>/agent.md` (not `agent.md` directly in agents/)
+4. **v0.4.3 known issue (B-2 backlog)**: daemon restart 只重读 sqlite,**磁盘直放的文件不注册**。必须用 `mavis agent new <name>` CLI(不传 `--system-prompt`)走一遍,daemon 才会写 sqlite
 
 ### "Agent shows up but ignores my agent.md"
 
@@ -213,6 +217,8 @@ The file must:
 - Be exactly at `~/.mavis/agents/<agent-name>/agent.md`
 - Start with the marker comment: `<!-- mavis:builtin-agent-md-stub v2 -->`
 - Be valid UTF-8 (not UTF-8 with BOM)
+
+**v0.4.3 known issue**: `mavis agent update --system-prompt "<长内容>"` 触发 daemon bug,agent.md >8000B 时会 silent drop。改 agent.md 必须用 Edit/Write 工具直接编辑磁盘文件(UTF-8 直通,绕开 PS 5.1 + daemon bug)
 
 ### "Skill doesn't auto-load"
 
@@ -302,7 +308,9 @@ This is why the install script copies only `agent.md` and `SKILL.md`.
 ## See Also
 
 - [README.md](../README.md) — project overview
-- [DESIGN.md](DESIGN.md) — design rationale (13 agents, 21 skills, 2-3 layer review)
+- [DESIGN.md](DESIGN.md) — design rationale (16 agents, 43 skills, 2-3 layer review)
 - [7-step-pipeline.md](7-step-pipeline.md) — how the agents work together
 - [AGENTS.md](../AGENTS.md) — agent index with triggers
 - [SKILLS.md](../SKILLS.md) — skill index with triggers
+- [OPTIMIZATION-v0.4.3-ADR.md](OPTIMIZATION-v0.4.3-ADR.md) — Mavis 工具链注册流程 backlog (B-1/B-2/B-3)
+- [`delegation-sop` skill](../skills/delegation-sop/SKILL.md) — Mavis 平台委派完整 SOP

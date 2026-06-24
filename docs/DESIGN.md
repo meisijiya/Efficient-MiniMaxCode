@@ -1,6 +1,6 @@
 # Design Rationale
 
-> Why 13 agents? Why 21 skills? Why this orchestration? This document explains the design decisions behind the Efficient-MiniMaxCode collection.
+> Why 16 agents? Why 43 skills? Why this orchestration? This document explains the design decisions behind the Efficient-MiniMaxCode collection.
 
 ---
 
@@ -22,7 +22,7 @@ The 4-layer principle: **agents do, skills teach**.
 
 ---
 
-## 2. Why 13 Agents (Not 30)?
+## 2. Why 16 Agents (Not 30)?
 
 Following the [ohMeisijiyaCode](https://github.com/meisijiya/ohMeisijiyaCode) principle: **agents are expensive** (each spawn = new LLM session + context). Don't add an agent if a prompt can be re-used.
 
@@ -35,7 +35,13 @@ Following the [ohMeisijiyaCode](https://github.com/meisijiya/ohMeisijiyaCode) pr
 - ❌ **`database-admin` agent** → schema design in architect, schema migration in coder, query in performance-analyzer
 - ❌ **`i18n-engineer` agent** → knowledge-digest + code-reader cover it for now
 
-**Result**: 13 agents = 1 orchestrator + 11 specialists + 1 fallback. The smallest sufficient set.
+**Result**: 16 agents = 1 orchestrator + 14 specialists + 1 fallback. The smallest sufficient set.
+
+**v0.4.2 expansion (13 → 16)**: We added 4 specialists that earn their own context:
+- **`planner`** — 把 spec-miner 输出转成多 Phase implementation plan(vertical slice 优先,笔记启发 8)
+- **`scout`** — 只读探索文件系统 / 代码库,返回结构化摘要(笔记启发 9:Pi Subagents Scout 等价,防止主 agent context 污染)
+- **`incident-responder`** — 线上事故响应(报警 → 定位 → 临时缓解 → 复盘),**只响应,长期修复转 coder**
+- **`doc-writer`** — 技术文档专职(API 文档 / 教程 / README / 内部 wiki),**不写元信息(归 meta-writer)**
 
 ---
 
@@ -149,14 +155,31 @@ This collection is **not perfect**. Known issues:
 - ❌ **No CI** to validate agents don't exceed the Mavis daemon's 8000-byte `mavis agent new` limit (workaround: use `mavis agent update` for large prompts — see `mavis` memory entry).
 - ❌ **No instinct library** in this repo (lives in `~/.mavis/memory/instincts/` separately, project-level).
 
+### v0.4.3 新增已知问题(Mavis 工具链 silent-drop 家族)
+
+**触发**:2026-06-24 19:34-21:55 注册 4 个新 agent 时反复栽在 daemon 注册流程
+
+| # | 问题 | 影响 | Work-around |
+|---|------|------|------------|
+| **B-1** | `mavis agent new` 失败时 silent(0 退出码 + 无错误) | 用户无法判断成功/失败,反复"重启验证"浪费 1h+ | 用 Node `spawnSync('cmd.exe', [...])` 调 CLI 不传 `--system-prompt` |
+| **B-2** | daemon 启动时不自检磁盘 vs sqlite,缺哪个不补 | 手动放文件注册的 agent 永远不被 daemon 发现 | 必须走 `mavis agent new` CLI 走一遍 |
+| **B-3** | `mavis agent list` 不显示磁盘与 sqlite 差异 | 诊断"为什么不生效"时看不到孤儿 agent | 无 work-around,等 B-3 修复 |
+| **silent-drop 家族** | agent.md >8000B / 中文长 prompt 走 PS 5.1 CLI / spawn 无 prompt | 多次"silent 失败"循环 | Edit/Write 工具(UTF-8 直通)+ YAML hardcode + scratchpad pointer |
+
+**完整委派 SOP**:见 `skills/delegation-sop/SKILL.md`(v0.4.3 首次入库,243 行)
+
 ---
 
 ## 9. Future Work
 
 - [x] Complete `api-design` and `frontend-patterns` skills — **done 2026-06-23**
+- [x] Add `planner` / `scout` / `incident-responder` / `doc-writer` agents — **done v0.4.2** (13→16)
+- [x] Add `delegation-sop` skill — **done v0.4.3** (Mavis 工具链 silent-drop 完整 SOP)
+- [ ] **Backport v0.4.3 backlog B-1/B-2/B-3** — mavis 工具链注册流程可靠性修复
 - [ ] Add CI with `mavis agent list` validation
 - [ ] Add a `release` workflow (GitHub Actions to publish tagged versions)
 - [ ] Translate README / DESIGN into English / 日本語
 - [ ] Add an `examples/` directory showing real 7-step pipeline runs
 - [ ] Add a `CONTRIBUTING.md` with agent / skill authoring guide
 - [ ] Add `instincts/` to repo (currently project-level only)
+- [ ] Backfill 5 skill gaps (3-layer router / spec-from-correction / context-reset / prompt-hardening / deep-modules)

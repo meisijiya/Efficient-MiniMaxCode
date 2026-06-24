@@ -199,4 +199,54 @@ v0.4.3 (待定):
 v0.5.0 (候选, 不在本 backlog):
 - [ ] agent.md schema 版本控制
 - [ ] mavis agent 自检 / 健康 dashboard
+
+---
+
+## 9. Self-test 反向证据 (2026-06-24 23:24)
+
+### 9.1 验证目标
+
+确认 **work-around(plan engine 委派 + on-disk overlay + daemon 自动读)** 在实战中稳定,**B-1/B-2 担心的 silent-drop 在新 agent 注册路径下不复现**。
+
+### 9.2 测试设计
+
+- **Plan**:`plan_67dba0c9` — v0.4.2 新加 4 agent 自检(planner / scout / incident-responder / doc-writer)
+- **路由**:走 `mavis team plan run <yaml>`(plan engine),prompt **hardcode 进 YAML**(不走 `--content` 字符串)
+- **委派链**:plan engine → daemon spawn worker → worker 读 on-disk `agent.md` overlay → 任务执行 → verifier 审 → cycle auto-accept
+- **每个 task 都是独立的 hello-world self-test**:planner 出 spec-miner brief 的 plan、scout 探索 agents/ 目录、ir 跑 mock SEV3、doc-writer 精简 243 行 SKILL.md。
+
+### 9.3 结果(2026-06-24 23:24 cycle-1-auto-accept)
+
+| Agent | Self-test | 关键产出 | Verifier |
+|-------|-----------|---------|----------|
+| `planner` | ✅ PASS | 2 phase / 2 issue vertical-slice plan(non-goals + risks + verification 全套),172 行 deliverable | ✅ PASS |
+| `scout` | ✅ PASS | 盘点 13 repo overlay + 17 runtime,事实披露 3 个 v0.4.2 新 agent sync gap | ✅ PASS |
+| `incident-responder` | ✅ PASS | mock SEV3 incident 走完 4 阶段(报警/定位/缓解/复盘),边界清晰 | ✅ PASS |
+| `doc-writer` | ✅ PASS | 243 行 SKILL.md 精简成 248 字 README 段,3 个必保留章节全在 | ✅ PASS |
+
+**成本**:8 sessions / 472k tokens(input 413k + output 58k) / **$1.01**(1 个 plan cycle 全包)
+**完整记录**:`C:\Users\22923\.mavis\plans\plan_67dba0c9\notes\cycle-1-auto-accept.md`
+
+### 9.4 反向证据 — B-1 / B-2 状态澄清
+
+**B-1(`mavis agent new` silent failure → 0 退出码)** 担心的现象:注册新 agent 时 CLI 静默失败 / sqlite 未写入。
+- **本次测试路径**:plan engine YAML → daemon 内部 spawn worker。**未直接调用 `mavis agent new`**,所以本次**不能证明 B-1 已修**。
+- **结论**:B-1 仍是 open。优先级 P0 不变。
+
+**B-2(daemon 启动不自检磁盘 vs sqlite)** 担心的现象:手动放 agent.md,daemon 不知道。
+- **本次测试路径**:4 个 v0.4.2 新 agent 已通过 `spawnSync('cmd.exe', ['mavis', 'agent', 'new', ...])` **不传 --system-prompt** 路径注册过(2026-06-24 19:34-21:55 work-around),daemon sqlite 写入成功,plan engine 能正常 spawn 这 4 个 agent。
+- **结论**:**work-around 路径稳定**,但根因(daemon 启动不自检磁盘)仍是 open。优先级 P0 不变。
+
+### 9.5 综合判断
+
+- ✅ **work-around SOP 实战有效**:`plan engine yaml hardcode` + `agent.md on-disk overlay` 这条组合链路在 4 个新 agent 上 100% 稳定。
+- ⚠️ **B-1 / B-2 仍是真 bug**,需要在 mavis 工具链上游修复,**不接受"work-around 通了就算修好"** 的偷换概念。
+- 📌 **下次复发条件**:用户再次直接放文件注册 agent(不调 `mavis agent new`) → daemon 启动不认 → 重新栽在 B-2 上。work-around 只能挡 plan engine 路径,挡不住"裸放文件"。
+
+### 9.6 同步缺口修复(2026-06-24)
+
+本次 self-test **额外暴露 sync gap**:scout 报告 `D:\...\Efficient-MiniMaxCode\agents\` 缺 3 个 v0.4.2 新 agent overlay(`scout` / `incident-responder` / `doc-writer`)。
+- **影响**:下次跑 `install.ps1` 时,这 3 个 agent 会被覆盖回 runtime 现有版本,**目前无害**;但如果有人清理 runtime(重装 / 迁移),repo 无法恢复这 3 个 agent。
+- **修复**:已将 3 个 runtime `agent.md` 同步进 repo overlay(同 commit 提交)。
+- **验证**:`Get-ChildItem agents/` 从 13 → 16,与 runtime 一致。
 ```

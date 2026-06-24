@@ -1,6 +1,7 @@
 ﻿# Agent Index (16)
 
-> Last verified: 2026-06-24 | Total: 16 agents (v0.4.2: added planner / scout / incident-responder / doc-writer)
+> Last verified: 2026-06-24 23:34 (v0.4.3: Mavis 工具链注册流程 backlog + delegation-sop skill 入库 + 4 v0.4.2 新 agent self-test PASS)
+> Total: 16 agents (v0.4.2: added planner / scout / incident-responder / doc-writer)
 > Auto-regenerated from `agents/<name>/agent.md` content. This is the canonical "which agent does what" quick reference.
 
 ## Quick Reference
@@ -196,3 +197,50 @@ See `mavis/agent.md` (routing table section) for the full decision tree.
 | `release-manager` | finishing-a-development-branch, verification-before-completion | 发布前 |
 | `general` | using-superpowers | fallback |
 | `architect` | vibecoding-discipline, verification-before-completion | 架构审前 |
+
+---
+
+## v0.4.3 Backlog — Mavis 工具链注册流程可靠性
+
+> **ADR**:`docs/OPTIMIZATION-v0.4.3-ADR.md`(2026-06-24)
+> **状态**:Proposed(backlog,未启动)
+> **根因**:2026-06-24 19:34-21:55 注册 4 个新 agent 时反复栽在 daemon silent-drop 家族
+
+**3 条待修 BUG**(按优先级):
+
+| # | Issue | 优先级 | 工作量 | 现象 |
+|---|-------|--------|--------|------|
+| **B-1** | `mavis agent new` silent failure → 必须返回非零退出码 + stderr | P0 | S (1-2h) | 用户无法判断成功/失败,反复"重启验证"浪费 1h+ |
+| **B-2** | daemon 启动时自检磁盘 vs sqlite,自动注册孤儿 agent | P0 | M (3-5h) | 手动放文件注册的 agent 永远不被 daemon 发现 |
+| **B-3** | `mavis agent list --all` 显示磁盘与注册表差异 | P1 | S (1-2h) | 用户没法看到"磁盘有但没注册"的孤儿 agent |
+
+**Work-around(在 B-1/B-2 修好之前)**:
+
+1. 注册新 agent 必走 `spawnSync('cmd.exe', ['mavis', 'agent', 'new', name, ...])` 不传 `--system-prompt`(Node 直通 PS 5.1 转义)
+2. 改 agent.md 必走 Edit/Write 工具(UTF-8 直通,不走 `mavis agent update --system-prompt`)
+3. 委派中文长 prompt 必走 `mavis team plan run <yaml>`(prompt hardcode 进 YAML)或 scratchpad pointer
+
+**完整委派 SOP**:`skill: delegation-sop`(本仓库 `skills/delegation-sop/SKILL.md`,v0.4.3 首次入库)
+
+---
+
+## Self-Test Status(2026-06-24 验证)
+
+| Agent | 注册状态 | Self-test | 备注 |
+|-------|---------|-----------|------|
+| `mavis` | ✅ | ✅ | 根 orchestrator,今晚全程工作正常 |
+| `coder` | ✅ | ✅ | 主力编程 agent |
+| `architect` | ✅ | ✅ | 架构审查 |
+| `verifier` | ✅ | ✅ | 代码审查 4 层置信度门 |
+| `silent-failure-hunter` | ✅ | ✅ | 7 种 silent failure 模式 |
+| `code-simplifier` | ✅ | ✅ | 过度工程清除 |
+| `spec-miner` | ✅ | ✅ | 需求挖掘 |
+| `planner` | ✅ | ✅ | v0.4.2 新加,2026-06-24 plan_67dba0c9 self-test PASS |
+| `scout` | ✅ | ✅ | v0.4.2 新加,2026-06-24 plan_67dba0c9 self-test PASS |
+| `incident-responder` | ✅ | ✅ | v0.4.2 新加,2026-06-24 plan_67dba0c9 self-test PASS |
+| `doc-writer` | ✅ | ✅ | v0.4.2 新加,2026-06-24 plan_67dba0c9 self-test PASS |
+| `build-error-resolver` | ✅ | ✅ | build/test 错误修复 |
+| `meta-writer` | ✅ | ✅ | ADR / DECISIONS 单写者 |
+| `auditor` | ✅ | ✅ | 6 维安全 / 合规审计 |
+| `release-manager` | ✅ | ✅ | 7 步发布流 |
+| `general` | ✅ | ✅ | fallback |
