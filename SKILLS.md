@@ -1,4 +1,4 @@
-﻿# Skill Index (43)
+﻿# Skill Index (44)
 
 > This index is auto-generated from the actual `SKILL.md` content. Use it as a quick reference for "which skill should I load for XX task".
 
@@ -41,6 +41,7 @@
 | Request code review | `requesting-code-review` |
 | Receive / respond to review feedback | `receiving-code-review` |
 | Verify before claiming complete | `verification-before-completion` |
+| Reset context before review / major decisions | `context-reset` |
 | Use git worktrees for isolation | `using-git-worktrees` |
 | Finish dev branch (merge/PR/keep/discard) | `finishing-a-development-branch` |
 | Write / edit skills following best practice | `writing-skills` |
@@ -160,6 +161,12 @@ These come with every Mavis Code install. Listed here for completeness.
 - **Purpose**: Adapted from mattpocock/skills `engineering/implement` (14 lines) — expanded to full SOP: plan → TDD → typecheck → test → review → commit. Coordinates coder + test-writer + verifier + build-error-resolver.
 - **File**: `skills/implement/SKILL.md`
 
+### `context-reset` (NEW 2026-06-24)
+- **Triggers**: context reset, 清空 context, Smart Zone, Dumb Zone, review reset, 重新 review, 注意力衰减, second-pass review, fresh-eyes review, context pollution
+- **Purpose**: Karpathy U-shape attention curve + Matt Pocock Smart Zone vs Dumb Zone — 3 reset modes (cross-session / summary-restart / external-reviewer handoff) with cost-benefit table and pre-review checklist. Trigger BEFORE reviewing own implementation / before major architecture decisions / before multi-hour session summary. Do NOT trigger for 3rd-party code first-read or trivial changes.
+- **File**: `skills/context-reset/SKILL.md`
+- **Must read for**: `verifier` / `architect` / `spec-miner` / `mavis` (post-implementation review; pre-major-decision)
+
 ### `obra/superpowers` 14-skill framework (NEW 2026-06-24)
 - **Source**: [obra/superpowers](https://github.com/obra/superpowers) (237k stars, the de facto agentic skills framework)
 - **Purpose**: Complete software development methodology — replaces `brainstorming` (mavis builtin) and `test-writer` with obra's verified versions; adds 12 more skills covering the full dev lifecycle.
@@ -193,17 +200,17 @@ These come with every Mavis Code install. Listed here for completeness.
 | Agent | Skills it MUST load |
 |-------|---------------------|
 | `coder` | `vibecoding-discipline` + `verification-loop` + `search-first` (第三方库) + `context-engineering` + `backend-patterns-{java OR python OR ts}` + `database-patterns` (if SQL) + `api-design` (if API) |
-| `verifier` | `vibecoding-discipline` + `verification-loop` + `context-engineering` |
-| `architect` | `vibecoding-discipline` + `context-engineering` + `api-design` (if API) + `database-patterns` (if schema) |
+| `verifier` | `vibecoding-discipline` + `verification-loop` + `context-engineering` + `context-reset` (post-implementation review) |
+| `architect` | `vibecoding-discipline` + `context-engineering` + `api-design` (if API) + `database-patterns` (if schema) + `context-reset` (pre-architecture-decision) |
 | `silent-failure-hunter` | `vibecoding-discipline` (composition > inheritance for safety) + `observability-and-instrumentation` (看是否有 silent failure 埋点) |
 | `code-simplifier` | `vibecoding-discipline` + `verification-loop` |
 | `test-writer` (skill, not agent) | `vibecoding-discipline` + `verification-loop` |
 | `meta-writer` | `vibecoding-discipline` (single-writer iron rule) + `context-engineering` (ADR 格式) |
 | `auditor` | `vibecoding-discipline` + `api-design` (if API) + `database-patterns` (if SQL) + `observability-and-instrumentation` |
 | `release-manager` | `vibecoding-discipline` + `verification-loop` + `observability-and-instrumentation` (4 项 checklist) |
-| `spec-miner` | `grill-me` (必 load) + `vibecoding-discipline` + `project-context` (如果项目有 CONTEXT.md) |
+| `spec-miner` | `grill-me` (必 load) + `vibecoding-discipline` + `project-context` (如果项目有 CONTEXT.md) + `context-reset` (final spec review) |
 | `planner` | `vibecoding-discipline` + `context-engineering` |
-| `mavis` (orchestrator) | `vibecoding-discipline` + `context-engineering` + `project-context` (启动时 load) |
+| `mavis` (orchestrator) | `vibecoding-discipline` + `context-engineering` + `project-context` (启动时 load) + `context-reset` (pre-major-decision) |
 | `coder` (when implementing from PRD/issues) | `implement` (6-step SOP: plan → TDD → typecheck → test → review → commit) + `to-issues` (if slicing a big spec) |
 
 See individual `agents/<name>/agent.md` for the explicit loading instructions.
