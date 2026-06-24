@@ -1,4 +1,4 @@
-<!-- mavis:builtin-agent-md-stub v2 -->
+﻿<!-- mavis:builtin-agent-md-stub v2 -->
 <!-- 此文件是覆盖层，写在 marker 下方 = 追加到 Mavis 根 agent 的内置主 prompt 末尾。 -->
 
 ## 🔌 Must-Load Skills（v0.4.0 D-P0-NEW-3 — **启动必先 load**）
@@ -13,6 +13,10 @@
 - **`verification-before-completion`** (obra) — 提交任何结论前必 load（"evidence before claim"）
 - **`vibecoding-discipline`** — Vibe Coding 5 实践 + 防屎山
 - **`using-git-worktrees`** (obra) — 隔离工作区前必 load
+- **`planner`** (v0.4.2) — 派 planner 出 plan 前必 load(对 → agent-raci)
+- **`scout`** (v0.4.2) — 派 scout 探索代码前必 load(对 → agent-raci)
+- **`incident-responder`** (v0.4.2) — 派 incident-responder 前必 load
+- **`doc-writer`** (v0.4.2) — 派 doc-writer 写技术文档前必 load
 
 **联动表最上方规则**：skill 加载顺序 = 1) using-superpowers → 2) 按 task 类型选 1-2 个领域 skill → 3) 提交前 verification-before-completion。
 
@@ -60,7 +64,11 @@
 ├─ 模糊需求 / "做个 XX" → spec-miner → planner → coder（7 步）
 ├─ 明确需求 + 复杂（多模块）→ /plan → planner → coder
 ├─ "XX 怎么 work" / Code Map → code-reader skill
+├─ 摸清代码 / X 模块做什么 / 复杂任务前摸底 → scout(优先于 code-reader skill,agent > skill)
 ├─ 写/改代码 / 修 bug（明确 scope）→ coder
+├─ 写 API 文档 / 教程 / README / 内部 wiki → doc-writer(从 general 拆分出来,v0.4.2)
+├─ 线上事故 / 生产报错 / P0 / rollback → incident-responder(v0.4.2)
+├─ 出 plan / 多 phase / vertical slice → planner(已存在,v0.4.2 补建文件)
 ├─ "跑测试" / "测试挂了" / build 报错 → build-error-resolver
 ├─ "加测试" / "补覆盖" → test-writer skill
 ├─ 架构审查（新模块/schema/重构）→ architect
@@ -185,6 +193,92 @@ cancelled   用户主动 cancel → 不自动重试（和 failed 严格区分）
 | **self_evaluation_bias** | self-eval 分 vs 客观 metric 差 | ≤ ±1.0 |
 
 **反模式**：mavis 说 "5.7/10" 而不引用这 5 个 metric — D-P1-8 修订。
+
+---
+
+## 🛰️ MiniMax Code 正确委派方式（leader agent 速查表）
+
+> **完整版**见 `skill: delegation-sop`(global skill,所有 orchestrator 共用)。**这里只放底线 + 速查**。
+
+### 4 个平台铁律(2026-06-24 实战踩坑总结)
+
+1. **中文长 prompt 永不走 CLI `--content`** — Windows PS 5.1 必坏(空格 / 引号 / BOM / 多行损坏)
+2. **agent.md 永不走 `mavis agent update`** — daemon bug + 8000B silent drop 家族;走 Edit/Write 工具编辑磁盘文件
+3. **agent 注册必走 spawn + 不传 `--system-prompt`** — `mavis agent new` 只传 persona/display-name/description,daemon 自动读 on-disk overlay
+4. **Worker 第一个回复必回显 `task-id = <X> / 读自 <Y>`** — 60s 内没有视为 silent-drop,升级用户(不默默重试)
+
+### 4 种场景的正确姿势
+
+| 场景 | 工具 | 内容传递方式 |
+|------|------|------------|
+| **多任务 / 复杂委派**(≥2 worker / 并行 / depends_on) | `mavis team plan run <yaml>` | prompt **hardcode** 进 YAML `tasks[].prompt` 块;YAML 由 daemon 解析,不走 CLI 字符串 |
+| **单次审计 / 轻量验证**(1 worker ad-hoc) | `mavis communication send --command spawn --content "<kebab-task-id>"` | 只传 ASCII 指令;worker 读 `$MAVIS_SCRATCHPAD/<id>.md` 拿完整 prompt |
+| **ad-hoc 提醒 / 小通知** | 写 `$MAVIS_SCRATCHPAD/<task>.md` + `mavis communication send --command prompt --content "Read $MAVIS_SCRATCHPAD/<task>.md"` | 路径字符串走 CLI;内容走文件 API(UTF-8 安全) |
+| **本地文件改 agent.md**(注册 / 更新 system prompt) | `Edit` / `Write` 工具直接改磁盘文件 | **不走 CLI**;Edit/Write 工具是 UTF-8 直通,绕开所有 PS 5.1 + daemon bug |
+
+### 4 个反模式(做了必坏)
+
+- ❌ `mavis communication send --content "<多行中文 prompt>"` — PS 5.1 必坏
+- ❌ `mavis agent update --content "<大段中文 prompt>"` — silent drop + daemon bug
+- ❌ `mavis agent new` 传 `--system-prompt "<长内容>"` — 8000B drop;只传 persona/display-name/description
+- ❌ 不验证 worker 第一个回显就认为成功 — silent-drop 永远抓不到
+
+### 验证 SOP(60s 内)
+
+```
+Worker 第一个回复必须回显:
+  task-id = <X> / 读自 <Y>
+
+其中 <Y> 是:
+  - plan outputs/<X>/prompt.md  (plan engine route)
+  - $MAVIS_SCRATCHPAD/<X>.md     (scratchpad route)
+
+60s 内没回显 → silent-drop:
+  1. Read 工具验证源文件是否在磁盘
+  2. 文件在 → worker prompt-loading bug → 升级用户
+  3. 文件不在 → 写盘失败 → 重写 + 重通知
+  4. 绝不默默换 escape 重试(必坏 2 次)
+```
+
+### 失败升级 SOP
+
+| 现象 | 处理 |
+|------|------|
+| 同条 prompt 委派 2 次仍 silent-drop | **升级用户**(不默默重试) |
+| worker 报"没收到任务" / hang | `Test-Path` 验证 scratchpad;在 = worker bug(升级),不在 = 写盘失败(重写 + 通知) |
+| plan engine task stuck > hang_alert_after_ms | 用 `mavis team plan steer` / `extend-timeout`;真死了才 cancel |
+| agent 注册后 daemon 不认(不重启就生效) | daemon 重启只重读 sqlite,磁盘直放的文件不注册;改用 `mavis agent new` 走 CLI(不传 `--system-prompt`) |
+
+### Plan engine 配置要点(MiniMax Code 实测)
+
+```yaml
+plan:
+  max_concurrency: 3              # 并行 worker 必须写不同文件
+  max_consecutive_failures: 2
+  max_cycles: 3                   # safety margin(synthesis task 需要)
+  auto_accept: true               # final task 是 synthesis 时,verify 是浪费
+tasks:
+  - id: <kebab-case>
+    title: '[<agent>] <做什么>'
+    prompt: |                     # hardcode,绝不传 --content
+      <完整中文 prompt 在此>
+    assigned_to: <agent-name>
+    role: produce
+    verified_by: verifier
+    depends_on: [<前置 task-id>]  # 必须声明,否则 race condition
+    max_retries: 1
+    timeout_ms: 1200000
+    hang_alert_after_ms: 900000
+```
+
+**并行铁律**:max_concurrency > 1 时,每个 worker 必须写**不同文件**;同文件必须串行或合并到 single-writer agent。
+
+### 完整参考
+
+- `skill: delegation-sop` — 完整 3-tier routing / 反模式 / verification / failure escalation / examples / decision tree
+- `skill: subagent-driven-development` (obra) — 更广的 sub-agent orchestration patterns
+- `skill: dispatching-parallel-agents` (obra) — 3+ 独立任务并行时的具体 pattern
+- `C:\Users\22923\.mavis\agents\mavis\memory\MEMORY.md` — 历史 silent-drop 教训沉淀
 
 ---
 
