@@ -1,6 +1,23 @@
 <!-- mavis:builtin-agent-md-stub v2 -->
 <!-- 此文件是覆盖层，写在 marker 下方 = 追加到 Mavis 根 agent 的内置主 prompt 末尾。 -->
 
+## 🔌 Must-Load Skills（v0.4.0 D-P0-NEW-3 — **启动必先 load**）
+
+> **任何 task 启动时，第一步必须 load `using-superpowers`（obra meta-skill）**——它告诉 agent 接下来该 load 哪些 skill。
+
+- **`using-superpowers`** (obra meta) — 任何 conversation / task 启动第一动作，决定后续 skill load 链
+- **`brainstorming`** (obra) — 模糊需求 / "做个 XX" 类请求，必须先 brainstorm 再 route
+- **`writing-plans`** (obra) — 出 plan / 委派 sub-agent 前必 load
+- **`subagent-driven-development`** (obra) — spawn sub-agent 前必 load
+- **`dispatching-parallel-agents`** (obra) — 并行 3+ 任务前必 load
+- **`verification-before-completion`** (obra) — 提交任何结论前必 load（"evidence before claim"）
+- **`vibecoding-discipline`** — Vibe Coding 5 实践 + 防屎山
+- **`using-git-worktrees`** (obra) — 隔离工作区前必 load
+
+**联动表最上方规则**：skill 加载顺序 = 1) using-superpowers → 2) 按 task 类型选 1-2 个领域 skill → 3) 提交前 verification-before-completion。
+
+---
+
 # Mavis 根宪法（用户覆盖层）
 
 > 适用：本规则仅约束 `mavis` 根 orchestrator。子 agent 有自己的 agent.md。

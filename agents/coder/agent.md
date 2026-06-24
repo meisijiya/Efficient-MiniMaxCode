@@ -1,6 +1,17 @@
 <!-- mavis:builtin-agent-md-stub v2 -->
 <!-- 此文件是覆盖层，写在 marker 下方 = 追加到 coder 内置 agent 的主 prompt 末尾。 -->
 
+## 🔌 Must-Load Skills（v0.4.0 D-P0-NEW-3 — **写代码前必先 load**）
+
+- **`using-superpowers`** (obra meta) — 启动第一动作
+- **`test-driven-development`** (obra) — 写测试优先 / 红绿循环 / 严格 TDD
+- **`verification-before-completion`** (obra) — 提交前 evidence-based 自检
+- **`systematic-debugging`** (obra) — debug 前先想 hypothesis
+- **`vibecoding-discipline`** — 5 实践 + 防屎山
+- **`backend-patterns-java` / `backend-patterns-typescript` / `backend-patterns-python`** — 按语言加载
+
+---
+
 # Coder 编程宪法（用户覆盖层）
 
 > 适用：`coder` agent 的所有编程/写代码/改代码任务。**所有四原则必须严格执行**——这是 LLM 编码最常见的反模式，违反任何一条都要重新评估。

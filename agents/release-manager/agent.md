@@ -1,6 +1,14 @@
 <!-- mavis:builtin-agent-md-stub v2 -->
 <!-- 此文件是覆盖层，追加到 release-manager agent 主 prompt 末尾。 -->
 
+## 🔌 Must-Load Skills（v0.4.0 D-P0-NEW-3 — **发布前必先 load**）
+
+- **`using-superpowers`** (obra meta) — 启动第一动作
+- **`finishing-a-development-branch`** (obra) — branch 完成 SOP（merge / PR / cleanup 决策）
+- **`verification-before-completion`** (obra) — 任何发布动作前 evidence-based 自检（tag / push 不可逆）
+
+---
+
 # Release Manager — 发布管家
 
 > 单职责：**把"代码完成"变成"用户可用"**——commit、changelog、tag、部署检查、发布后验证。

@@ -1,109 +1,122 @@
 ﻿# Agent Index (13)
 
-> This index is auto-generated from the actual `agent.md` content. Use it as a quick reference for "which agent does what".
+> Last verified: 2026-06-24 | Total: 13 agents
+> Auto-regenerated from `agents/<name>/agent.md` content. This is the canonical "which agent does what" quick reference.
 
 ## Quick Reference
 
 | Trigger | Agent |
 |---------|-------|
-| "鍋?XX" / "鍔犲姛鑳? / "鏀逛唬鐮? / "淇?bug" | `coder` |
-| "鐪嬭繖鐗? / "瀹℃煡" / "鎻?PR" | `architect` + `verifier` (2 layers) |
-| "鏋舵瀯瀵瑰悧" / "鏂版ā鍧? / "閲嶆瀯" / "schema 鏀? | `architect` |
-| "浠ｇ爜瀵瑰悧" / "杈圭晫杩囧悧" / "鎬ц兘" | `verifier` |
-| "涓轰粈涔堟病鐢熸晥" / "鏁版嵁涓簡" / "娌℃姤閿欎絾 XX" | `silent-failure-hunter` |
-| "浠ｇ爜澶暟鍡? / "鐮嶄竴涓? / "绠€鍖? | `code-simplifier` |
-| "闇€姹備笉娓呮" / "鍏堟寲涓€涓? / "鍋氫釜 plan" | `spec-miner` 鈫?`planner` |
-| "build 绾簡" / "娴嬭瘯鎸備簡" / "缂栬瘧鎶ラ敊" | `build-error-resolver` |
-| "鍔犳祴璇? / "琛ユ祴璇? | `test-writer` (skill) |
-| "鎽告竻杩欐ā鍧? / "Code Map" / "杩欎釜骞蹭粈涔堢殑" | `code-reader` (skill) |
-| "鎬ц兘闂" / "鎱㈡浜? / "profile" | `performance-analyzer` (skill) |
-| "璁颁竴涓嬪喅绛? / "鍐?ADR" | `meta-writer` |
-| "涓婄嚎" / "鍙戝竷" / "changelog" / "鎵?tag" | `release-manager` |
-| "瀹¤" / "鍚堣" / "瀹夊叏" / "PII" / "渚濊禆" | `auditor` (閲嶅ぇ鍐崇瓥鏃? |
-| "鎴戜笉鐭ラ亾璇ユ壘璋? | `mavis` (鎴戝厛鍒ゆ柇) |
+| "帮我做 XX" / "加功能" / "改代码" / "修 bug" | `coder` |
+| "看下这个" / "审查" / "提 PR" | `architect` + `verifier` (2 layers) |
+| "架构对吗" / "新模块" / "重构" / "schema 改" | `architect` |
+| "代码对吗" / "边界过吗" / "性能" | `verifier` |
+| "为什么不生效" / "数据丢了" / "没报错但 XX" | `silent-failure-hunter` |
+| "代码太啰嗦" / "砍一下" / "简化" | `code-simplifier` |
+| "需求不清楚" / "先挖一个" / "做个 plan" | `spec-miner` → `planner` |
+| "build 挂了" / "测试挂了" / "编译报错" | `build-error-resolver` |
+| "加测试" / "补测试" | `test-writer` (skill) |
+| "摸清这个模块" / "Code Map" / "这个盘干嘛的" | `code-reader` (skill) |
+| "性能问题" / "慢死了" / "profile" | `performance-analyzer` (skill) |
+| "记一个决策" / "写 ADR" | `meta-writer` |
+| "上线" / "发布" / "changelog" / "打 tag" | `release-manager` |
+| "审计" / "合规" / "安全" / "PII" / "依赖" | `auditor` (重大决策时) |
+| "我不知道该找谁" | `mavis` (我先判断) |
 
 ---
 
 ## Detailed Roles
 
-### `mavis` 鈥?Root Orchestrator
+### `mavis` — Root Orchestrator
 - **Type**: Orchestrator
 - **Role**: 7-step pipeline routing + decision tree + failure fallback
 - **Trigger**: Any ambiguous user intent
+- **Loads skills**: `using-superpowers`, `brainstorming`, `writing-plans`, `subagent-driven-development`, `dispatching-parallel-agents`, `verification-before-completion`, `vibecoding-discipline`
 - **Key files**: `mavis/agent.md`
 
-### `coder` 鈥?Software Engineer
+### `coder` — Software Engineer
 - **Type**: Worker
 - **Role**: Write code (Spring Boot / TS / Python priority)
 - **4 principles**: Think / Simplicity / Surgical / Goal-driven
-- **Loads skills**: `vibecoding-discipline`, `verification-loop`, `backend-patterns-*` (per language)
+- **Loads skills**: `test-driven-development`, `verification-before-completion`, `systematic-debugging`, `vibecoding-discipline`, `backend-patterns-java`, `backend-patterns-typescript`, `backend-patterns-python`
 - **Key files**: `coder/agent.md`
 
-### `architect` 鈥?Architectural Reviewer
+### `architect` — Architectural Reviewer
 - **Type**: Worker
 - **Role**: Module boundaries / interfaces / data flow / state ownership / dependency direction
 - **Does NOT do**: Code details, error handling, performance
+- **Loads skills**: `using-superpowers`, `vibecoding-discipline`, `verification-before-completion`
 - **Key files**: `architect/agent.md`
 
-### `verifier` 鈥?Adversarial Code Reviewer
+### `verifier` — Adversarial Code Reviewer
 - **Type**: Worker
 - **Role**: 4-layer confidence gate + Vibe Coding 5-practice review
 - **Verdicts**: APPROVE / WARNING / BLOCK
+- **Loads skills**: `using-superpowers`, `verification-before-completion`, `receiving-code-review`, `requesting-code-review`
 - **Key files**: `verifier/agent.md`
 
-### `silent-failure-hunter` 鈥?Silent Failure Specialist
+### `silent-failure-hunter` — Silent Failure Specialist
 - **Type**: Worker
-- **Role**: 7 silent-failure patterns (empty catch / swallowed errors / fire-and-forget / default-value masking / early-return-without-error / async race / silent rollback / log-to-blackhole)
+- **Role**: 7 silent-failure patterns (empty catch / swallowed errors / fire-and-forget / default-value masking / early-return-without-error / async race / silent rollback)
 - **Trigger**: Production incident with no error log
+- **Loads skills**: `using-superpowers`, `systematic-debugging`, `observability-and-instrumentation`
 - **Key files**: `silent-failure-hunter/agent.md`
 
-### `code-simplifier` 鈥?Over-engineering Remover
+### `code-simplifier` — Over-engineering Remover
 - **Type**: Worker
-- **Role**: Trim 200-line code to 50 鈥?only removes, never adds
-- **Trigger**: "杩欎唬鐮佹€庝箞杩欎箞鍟板棪"
+- **Role**: Trim 200-line code to 50 — only removes, never adds
+- **Trigger**: "这代码怎么这么啰嗦"
+- **Loads skills**: `using-superpowers`, `test-driven-development`, `verification-before-completion`, `vibecoding-discipline`
 - **Key files**: `code-simplifier/agent.md`
 
-### `spec-miner` 鈥?Requirement Archaeologist
+### `spec-miner` — Requirement Archaeologist
 - **Type**: Worker
-- **Role**: Vague requirement 鈫?structured spec (with non-goals + acceptance criteria)
-- **Trigger**: User says "鍋氫釜 XX" without clear scope
+- **Role**: Vague requirement → structured spec (with non-goals + acceptance criteria)
+- **Trigger**: User says "做个 XX" without clear scope
+- **Loads skills**: `using-superpowers`, `brainstorming`
 - **Key files**: `spec-miner/agent.md`
 
-### `planner` 鈥?Strategic Planner
+### `planner` — Strategic Planner
 - **Type**: Worker
 - **Role**: Architecture + product spec + executable plan (multi-phase, independently mergeable)
 - **Trigger**: Complex feature / refactor / architecture decision
+- **Loads skills**: `using-superpowers`, `writing-plans`, `executing-plans`
 - **Key files**: `planner/agent.md`
 
-### `build-error-resolver` 鈥?Build Error Fixer
+### `build-error-resolver` — Build Error Fixer
 - **Type**: Worker
 - **Role**: Targeted build / lint / test failure fix
 - **Also handles**: `test-runner` role (runs tests, not just writes them)
+- **Loads skills**: `using-superpowers`, `systematic-debugging`, `test-driven-development`, `verification-before-completion`
 - **Key files**: `build-error-resolver/agent.md`
 
-### `meta-writer` 鈥?Metadata Single-writer
+### `meta-writer` — Metadata Single-writer
 - **Type**: Worker
-- **Role**: 11-type project metadata (ADR / DECISIONS / KNOWLEDGE / INSTINCTS / etc.) 鈥?**single-writer iron rule**
+- **Role**: 11-type project metadata (ADR / DECISIONS / KNOWLEDGE / INSTINCTS / etc.) — single-writer iron rule
 - **Trigger**: Made a non-trivial decision
+- **Loads skills**: `using-superpowers`, `writing-plans`, `verification-before-completion`, `vibecoding-discipline`
 - **Key files**: `meta-writer/agent.md`
 
-### `auditor` 鈥?Security / Compliance Auditor
+### `auditor` — Security / Compliance Auditor
 - **Type**: Worker
 - **Role**: 6 audit dimensions (input validation / authN-Z / sensitive data / dependencies / config-deploy / business logic)
-- **Trigger**: 閲嶅ぇ鍐崇瓥 (payment / PII / GDPR / new deps / auth)
+- **Trigger**: 重大决策 (payment / PII / GDPR / new deps / auth)
 - **Default**: NOT spawned. Only via `mavis` upgrade path.
+- **Loads skills**: `using-superpowers`, `verification-before-completion`
 - **Key files**: `auditor/agent.md`
 
-### `release-manager` 鈥?Release Conductor
+### `release-manager` — Release Conductor
 - **Type**: Worker
 - **Role**: 7-step release flow (pre-flight / changelog / version+tag / commit+push / deploy / post-deploy verify / notify+document) + rollback
-- **Trigger**: "涓婄嚎" / "鍙戝竷" / "鎵?tag" / `release/vX.Y` branch
+- **Trigger**: "上线" / "发布" / "打 tag" / `release/vX.Y` branch
+- **Loads skills**: `using-superpowers`, `finishing-a-development-branch`, `verification-before-completion`
 - **Key files**: `release-manager/agent.md`
 
-### `general` 鈥?Generic Fallback
+### `general` — Generic Fallback
 - **Type**: Worker
 - **Role**: Generic worker, routes to specialists when needed
 - **Use case**: One-off tasks without a specialist
+- **Loads skills**: `using-superpowers`
 - **Key files**: `general/agent.md`
 
 ---
@@ -118,6 +131,28 @@
 - Auth / permission / OAuth / JWT
 - Database schema major change
 
-**Don't use 4 layers** by default. The "business reviewer" role is handled by `spec-miner` in the upfront phase 鈥?adding a 4th reviewer would duplicate work.
+**Don't use 4 layers** by default. The "business reviewer" role is handled by `spec-miner` in the upfront phase — adding a 4th reviewer would duplicate work.
 
-See `mavis/agent.md` (routing table section) for the decision tree.
+See `mavis/agent.md` (routing table section) for the full decision tree.
+
+---
+
+## must-load skill 联动 (v0.4.0 D-P0-NEW-3)
+
+每个 agent 启动时**强制 load** 的 obra skill（声明在本 agent.md 的 "必须加载" 段）：
+
+| Agent | Must-load (obra) | 关联 |
+|-------|------------------|------|
+| `mavis` | using-superpowers (meta) | 启动先 load |
+| `coder` | test-driven-development, verification-before-completion, systematic-debugging | 写代码前 |
+| `verifier` | using-superpowers, verification-before-completion, receiving-code-review, requesting-code-review | 审查前 |
+| `silent-failure-hunter` | systematic-debugging, using-superpowers | 找 silent failure 前 |
+| `code-simplifier` | test-driven-development, verification-before-completion, vibecoding-discipline | 删前看 test |
+| `spec-miner` | brainstorming | 挖需求前 |
+| `planner` | writing-plans, executing-plans | 出 plan 前 |
+| `build-error-resolver` | systematic-debugging, test-driven-development, verification-before-completion | 跑+修前 |
+| `meta-writer` | writing-plans, verification-before-completion | 写 ADR 前 |
+| `auditor` | verification-before-completion | 审计前 |
+| `release-manager` | finishing-a-development-branch, verification-before-completion | 发布前 |
+| `general` | using-superpowers | fallback |
+| `architect` | vibecoding-discipline, verification-before-completion | 架构审前 |
